@@ -12,8 +12,8 @@
                 <td>{{$order['order_sn']}}</td>
             </tr>
             <tr>
-                <td>商品ID</td>
-                <td>{{$order['goods_id']}}</td>
+                <td>商品名称</td>
+                <td>{{$goods['goods_name']}}</td>
             </tr>
             <tr>
                 <td>购买数量</td>
@@ -28,8 +28,16 @@
                 <td>{{$order['order_amount']}}</td>
             </tr>
         </table>
-        <div style="margin-left: 1000px;">
-            <a type="button" href="/order/payo/{{$order['order_id']}}" class="btn btn-warning btn-lg ">支付</a>
+        <div >
+            @if($order['is_pay']==1)
+                <a type="button" class="btn btn-info" href="/order/payo/{{$order['order_id']}}" id="add_cart_btn">支付</a>
+                <a type="button" class="btn btn-info" href="/order/off/{{$order['order_id']}}" id="add_cart_btn">取消订单</a>
+            @elseif($order['is_pay']==2)
+                <button type="button" class="btn btn-default" disabled="disabled">已支付</button>
+                <a type="button" class="btn btn-info" href="/order/refund/{{$order['order_id']}}" id="add_cart_btn">退款</a>
+            @elseif($order['is_pay']==3)
+                <button type="button" class="btn btn-default" disabled="disabled">已退款</button>
+            @endif
         </div>
 
 

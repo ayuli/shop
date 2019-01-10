@@ -1,7 +1,9 @@
 @extends('layouts.bst')
 
 @section('content')
-<form class="form-signin" action="/user/reg" method="post">
+    <div style="width: 800px;">
+
+    <form class="form-signin" action="/user/reg" method="post">
     {{csrf_field()}}
     <h2 class="form-signin-heading">用户注册</h2>
     <label for="inputNickName">Nickname</label>
@@ -21,4 +23,5 @@
     <input type="password" name="pass2" id="inputPassword2" class="form-control" placeholder="***" required>
     <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
 </form>
+    </div>
 @endsection

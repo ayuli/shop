@@ -25,7 +25,7 @@
             </div>
             <div class="navbar-collapse collapse" role="navigation">
                 <ul class="nav navbar-nav">
-                    <li class="hidden-sm hidden-md"><a href="https://v2.bootcss.com/" target="_blank" onclick="_hmt.push(['_trackEvent', 'navbar', 'click', 'v2doc'])">Bootstrap2中文文档</a></li>
+                    <li class="hidden-sm hidden-md"><a href=""  onclick="_hmt.push(['_trackEvent', 'navbar', 'click', 'v2doc'])">Bootstrap2中文文档</a></li>
                     <li><a href="/goods"  >Bootstrap商品表</a></li>
                     <li><a class="reddot" href="/order" >订单表</a></li>
                     <form class="navbar-form navbar-left">

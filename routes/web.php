@@ -86,7 +86,7 @@ Route::post('/cart/del','Cart\IndexController@del')->middleware('check.login.tok
 
 // 商品表
 //Route::get('/goods/{goods_id}','Goods\IndexController@index')->middleware('check.login.token');
-Route::get('/goods','Goods\IndexController@index')->middleware('check.login.token');
+Route::get('/goods','Goods\IndexController@index');
 
 
 // 订单表
@@ -95,3 +95,4 @@ Route::post('/order/add','Order\IndexController@add')->middleware('check.login.t
 Route::get('/order/pay/{order_id}','Order\IndexController@pay')->middleware('check.login.token');//支付展示
 Route::get('/order/payo/{order_id}','Order\IndexController@payo')->middleware('check.login.token');//执行支付
 Route::get('/order/off/{order_id}','Order\IndexController@off')->middleware('check.login.token');//取消订单
+Route::get('/order/refund/{order_id}','Order\IndexController@refund')->middleware('check.login.token');//取消订单

@@ -16,7 +16,7 @@ class IndexController extends Controller
     {
         $order = OrderModel::where(['uid'=>session()->get('uid'),'is_delete'=>1])->get()->toArray();
         $data = [
-            'order'=>$order
+            'order'=>$order,
         ];
         return view('order.index',$data);
     }
@@ -111,8 +111,10 @@ class IndexController extends Controller
     public function pay($order_id){
 //        $order_id = $request->input('cart_id');
         $order = OrderModel::where(['order_id'=>$order_id])->first();
+        $goods = GoodsModel::where(['goods_id'=>$order['goods_id']])->first();
         $data = [
-            'order'=>$order
+            'order'=>$order,
+            'goods'=>$goods
         ];
         return view('order.pay',$data);
     }
@@ -158,10 +160,21 @@ class IndexController extends Controller
     }
 
     /** 退款 */
-    public function refund()
+    public function refund($order_id)
     {
         // 把库存加回来
-
-        //修改is_pay 状态为3 
+//        echo $order_id;
+        $order = OrderModel::where(['order_id'=>$order_id])->first();
+        $goods = GoodsModel::where(['goods_id'=>$order['goods_id']])->first();
+        $goodsData = [
+            'store' => $goods['store']+$order['pay_num']
+        ];
+        GoodsModel::where(['goods_id'=>$order['goods_id']])->update($goodsData);
+        //修改is_pay 状态为3
+        $orderData = [
+            'is_pay' => 3
+        ];
+        OrderModel::where(['order_id'=>$order_id])->update($orderData);
+        header('location:/order');
     }
 }

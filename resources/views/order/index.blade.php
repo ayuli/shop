@@ -21,13 +21,7 @@
                     <td>{{date('Y-m-d H:i:s',$v['add_time'])}}</td>
                     <td>{{$v['order_amount']}}</td>
                     <td>
-                        @if($v['is_pay']==1)
-                        <a type="button" class="btn btn-info" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">支付</a>
-                        <a type="button" class="btn btn-info" href="/order/off/{{$v['order_id']}}" id="add_cart_btn">取消订单</a>
-                        @elseif($v['is_pay']==2)
-                            <button type="button" class="btn btn-default" disabled="disabled">已支付</button>
-                            <a type="button" class="btn btn-info" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">退款</a>
-                        @endif
+                        <a type="button" class="btn btn-info" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">订单详情</a>
                     </td>
                 </tr>
             @endforeach
