@@ -18,13 +18,27 @@
                     <td>{{$v['goods_id']}}</td>
                     <td>{{$v['pay_num']}}</td>
                     <td>{{$v['uid']}}</td>
-                    <td>{{$v['add_time']}}</td><td>{{$v['order_amount']}}</td>
-                    <td><a type="button" class="btn btn-primary" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">支付</a>
-                        <a type="button" class="btn btn-primary" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">取消订单</a></td>
+                    <td>{{date('Y-m-d H:i:s',$v['add_time'])}}</td>
+                    <td>{{$v['order_amount']}}</td>
+                    <td>
+                        @if($v['is_pay']==1)
+                        <a type="button" class="btn btn-info" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">支付</a>
+                        <a type="button" class="btn btn-info" href="/order/off/{{$v['order_id']}}" id="add_cart_btn">取消订单</a>
+                        @elseif($v['is_pay']==2)
+                            <button type="button" class="btn btn-default" disabled="disabled">已支付</button>
+                            <a type="button" class="btn btn-info" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">退款</a>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+        <nav aria-label="...">
+            <ul class="pager">
+                <li><a href="#">Previous</a></li>
+                <li><a href="#">Next</a></li>
+            </ul>
+        </nav>
 
 @endsection
 

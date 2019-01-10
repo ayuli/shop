@@ -14,7 +14,7 @@ class IndexController extends Controller
     /** 订单展示 */
     public function index()
     {
-        $order = OrderModel::where(['uid'=>session()->get('uid')])->get();
+        $order = OrderModel::where(['uid'=>session()->get('uid'),'is_delete'=>1])->get()->toArray();
         $data = [
             'order'=>$order
         ];
@@ -107,7 +107,7 @@ class IndexController extends Controller
         // 单个删除购物车数据
         CartModel::where(['id'=>$order])->delete();
     }
-    /** 支付 */
+    /** 支付展示 */
     public function pay($order_id){
 //        $order_id = $request->input('cart_id');
         $order = OrderModel::where(['order_id'=>$order_id])->first();
@@ -115,5 +115,53 @@ class IndexController extends Controller
             'order'=>$order
         ];
         return view('order.pay',$data);
+    }
+
+    /** 支付执行 */
+    public function payo($order_id)
+    {
+        // 减库存
+        $orderWhere = [
+            'order_id' => $order_id
+        ];
+        $order = OrderModel::where($orderWhere)->first()->toArray();
+        $goodsWhere = [
+            'goods_id' =>$order['goods_id']
+        ];
+        $goods = GoodsModel::where($goodsWhere)->first();
+        $goodsData = [
+            'store' => $goods['store']-$order['pay_num']
+        ];
+        if($goodsData<=0){
+            exit('库存不足');
+        }
+        GoodsModel::where($goodsWhere)->update($goodsData);
+
+        // 修改订单状态
+        if($order['is_pay']==2){
+            exit('已支付');
+        }
+        $orderData = [
+            'pay_time'      =>  time(),
+            'is_pay'        =>  2,
+        ];
+        OrderModel::where($orderWhere)->update($orderData);
+        header('location:/order');
+    }
+
+    /** 取消订单 */
+    public function off($order_id)
+    {
+        // 修改 is_delete 状态
+        OrderModel::where(['order_id'=>$order_id])->update(['is_delete'=>2]);
+        header('location:/order');
+    }
+
+    /** 退款 */
+    public function refund()
+    {
+        // 把库存加回来
+
+        //修改is_pay 状态为3 
     }
 }

@@ -14,7 +14,12 @@
                             <input type="checkbox" class="inlineCheckbox" value="{{$v['id']}}">
                         </label>
                     </td>
-                    <td>{{$v['id']}}</td><td>{{$v['goods_id']}}</td><td>{{$v['num']}}</td><td>{{$v['price']}}</td><td>{{$v['add_time']}}</td><td>{{$v['uid']}}</td>
+                    <td>{{$v['id']}}</td>
+                    <td>{{$v['goods_id']}}</td>
+                    <td>{{$v['num']}}</td>
+                    <td>{{$v['price']}}</td>
+                    <td>{{date('Y-m-d H:i:s',$v['add_time'])}}</td>
+                    <td>{{$v['uid']}}</td>
                     <td><button type="button" class="btn btn-primary" cart_id="{{$v['id']}}">删除</button></td>
                 </tr>
             @endforeach
