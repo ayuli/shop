@@ -108,9 +108,12 @@ class IndexController extends Controller
         CartModel::where(['id'=>$order])->delete();
     }
     /** 支付 */
-    public function pay(Request $request){
-        $order_id = $request->input('order_id');
-        $data = OrderModel::where(['order_id'=>$order_id])->first();
+    public function pay($order_id){
+//        $order_id = $request->input('cart_id');
+        $order = OrderModel::where(['order_id'=>$order_id])->first();
+        $data = [
+            'order'=>$order
+        ];
         return view('order.pay',$data);
     }
 }

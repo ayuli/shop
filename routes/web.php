@@ -92,4 +92,4 @@ Route::get('/goods','Goods\IndexController@index')->middleware('check.login.toke
 // 订单表
 Route::get('/order','Order\IndexController@index')->middleware('check.login.token');
 Route::post('/order/add','Order\IndexController@add')->middleware('check.login.token');
-Route::get('/order/pay','Order\IndexController@pay')->middleware('check.login.token');
+Route::get('/order/pay/{order_id}','Order\IndexController@pay')->middleware('check.login.token');

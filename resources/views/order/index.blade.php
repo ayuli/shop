@@ -19,8 +19,8 @@
                     <td>{{$v['pay_num']}}</td>
                     <td>{{$v['uid']}}</td>
                     <td>{{$v['add_time']}}</td><td>{{$v['order_amount']}}</td>
-                    <td><button type="button" class="btn btn-primary" order="{{$v['order_id']}}" id="add_cart_btn">支付</button>
-                        <button type="button" class="btn btn-primary" order="{{$v['order_id']}}" id="add_cart_btn">取消订单</button></td>
+                    <td><a type="button" class="btn btn-primary" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">支付</a>
+                        <a type="button" class="btn btn-primary" href="/order/pay/{{$v['order_id']}}" id="add_cart_btn">取消订单</a></td>
                 </tr>
             @endforeach
             </tbody>

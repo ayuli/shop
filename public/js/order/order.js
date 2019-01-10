@@ -7,6 +7,7 @@ $('.btn-warning').click(function (e) {
             va+= _this.val()+',';
         }
     })
+    var order_id=
     $.ajax({
         headers     :   {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -16,12 +17,12 @@ $('.btn-warning').click(function (e) {
         data        :   {cart_id:va},
         dataType    :   'json',
         success     :   function (d) {
-            // console.log(d)
-            if(d.error==301){
-                window.location.href=d.url;
-            }else{
-                window.location.href='/order/pay';
-            }
+            console.log(d)
+            // if(d.error==301){
+            //     window.location.href=d.url;
+            // }else{
+            //     location.href='/order/pay/'+va;
+            // }
         }
     })
 

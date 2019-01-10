@@ -12,15 +12,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{$v['order_id']}}</td>
-                    <td>{{$v['order_sn']}}</td>
-                    <td>{{$v['goods_id']}}</td>
-                    <td>{{$v['pay_num']}}</td>
-                    <td>{{$v['uid']}}</td>
-                    <td>{{$v['add_time']}}</td><td>{{$v['order_amount']}}</td>
+                    <td>{{$order['order_id']}}</td>
+                    <td>{{$order['order_sn']}}</td>
+                    <td>{{$order['goods_id']}}</td>
+                    <td>{{$order['pay_num']}}</td>
+                    <td>{{$order['uid']}}</td>
+                    <td>{{$order['add_time']}}</td><td>{{$order['order_amount']}}</td>
                 </tr>
             </tbody>
         </table>
+        <div style="margin-left: 1000px;">
+            <a type="button" class="btn btn-warning btn-lg ">支付</a>
+        </div>
+
 
 @endsection
 
