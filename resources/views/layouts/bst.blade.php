@@ -26,11 +26,14 @@
             <div class="navbar-collapse collapse" role="navigation">
                 <ul class="nav navbar-nav">
                     <li class="hidden-sm hidden-md"><a href="https://v2.bootcss.com/" target="_blank" onclick="_hmt.push(['_trackEvent', 'navbar', 'click', 'v2doc'])">Bootstrap2中文文档</a></li>
-                    <li><a href="" target="_blank" >Bootstrap3中文文档</a></li>
-                    <li><a href="" target="_blank" >Bootstrap4中文文档</a></li>
-                    <li><a href="" target="_blank" >Less 教程</a></li>
-                    <li><a href="" target="_blank" >jQuery API</a></li>
-                    <li><a class="reddot" href="" target="_blank" >网站实例</a></li>
+                    <li><a href="/goods"  >Bootstrap商品表</a></li>
+                    <li><a class="reddot" href="/order" >订单表</a></li>
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
                 </ul>
                 <ul class="nav navbar-nav navbar-right hidden-sm">
                     <li><a href="/cart" >购物车</a></li>
@@ -38,6 +41,7 @@
                 <ul class="nav navbar-nav navbar-right hidden-sm">
                     <li><a href="/user/login" >登陆</a></li>
                     <li><a href="/user/reg" >注册</a></li>
+                    <li><a href="/user/quit" >退出</a></li>
                 </ul>
             </div>
         </div>

@@ -73,14 +73,8 @@ Route::get('/mvc/test1','Mvc\MvcController@test1');
 
 Route::get('/mvc/bst','Mvc\MvcController@bst');
 
-
-//Test
-Route::get('/test/cookie1','Test\TestController@cookieTest1');
-Route::get('/test/cookie2','Test\TestController@cookieTest2');
-Route::get('/test/session','Test\TestController@sessionTest');
-Route::get('/test/mid1','Test\TestController@mid1')->middleware('check.uid');        //中间件测试
-Route::get('/test/check_cookie','Test\TestController@checkCookie')->middleware('check.cookie');        //中间件测试
-
+//退出
+Route::get('user/quit','User\UserController@quit');
 
 //购物车
 //Route::get('/cart','Cart\IndexController@index')->middleware('check.uid');
@@ -95,4 +89,7 @@ Route::post('/cart/del','Cart\IndexController@del')->middleware('check.login.tok
 Route::get('/goods','Goods\IndexController@index')->middleware('check.login.token');
 
 
-
+// 订单表
+Route::get('/order','Order\IndexController@index')->middleware('check.login.token');
+Route::post('/order/add','Order\IndexController@add')->middleware('check.login.token');
+Route::get('/order/pay','Order\IndexController@pay')->middleware('check.login.token');

@@ -26,9 +26,9 @@ class UserController extends Controller
         echo '<pre>';print_r($_POST);echo '</pre>';
         $pass = $request->input('pass');
         $pass2 = $request->input('pass2');
-        $username = $request->input('username');
+        $nick_name = $request->input('nick_name');
         //验证用户唯一
-        $uniqueness = UserModel::where(['nick_name'=>$username])->first();
+        $uniqueness = UserModel::where(['nick_name'=>$nick_name])->first();
         if($uniqueness){
             die("用户已存在");
         }
@@ -37,7 +37,7 @@ class UserController extends Controller
         }
         $pass = password_hash($pass,PASSWORD_BCRYPT);
         $data = [
-            'nick_name'  => $request->input('username'),
+            'nick_name'  => $nick_name,
             'pass'  => $pass,
             'age'  => $request->input('age'),
             'tel'  => $request->input('tel'),
@@ -48,8 +48,12 @@ class UserController extends Controller
         var_dump($uid);
 
         if($uid){
+            $token = substr(md5(time().mt_rand(1,99999)),10,10);
             header('refresh:2;url=/user/center');
             setcookie('uid',$uid,time()+86400,'/','shop.com',false,true);
+            setcookie('token',$token,time()+86400,'/user','',false,true);
+
+            $request->session()->put('u_token',$token);
             $request->session()->put('uid',$uid);
             echo '注册成功';
         }else{
@@ -80,10 +84,10 @@ class UserController extends Controller
                 $request->session()->put('u_token',$token);
                 $request->session()->put('uid',$we->uid);
 
-                header('refresh:2;url=/user/center');
-                echo "登录成功";
+                header('location:/user/center');
             }else{
-                die("密码不正确");
+                echo "密码不正确";
+                header('refresh:2;url=/user/center');
             }
         }else{
             die("用户不存在");
@@ -102,9 +106,6 @@ class UserController extends Controller
 
 
         echo 'u_token: '.$request->session()->get('u_token'); echo '</br>';
-//        echo '<pre>';print_r($request->session()->get('u_token'));echo '</pre>';
-
-//        echo '<pre>';print_r($_COOKIE);echo '</pre>';
 
         if(empty($_COOKIE['uid'])){
             header('Refresh:2;url=/user/login');
@@ -119,6 +120,14 @@ class UserController extends Controller
             ];
             return view('users.show',$data);
         }
+    }
+
+    /** 退出 */
+    public function quit(){
+        session()->pull('u_token');
+        session()->pull('uid');
+
+        header('location:/user/login');
     }
 
 }

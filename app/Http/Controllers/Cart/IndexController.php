@@ -23,13 +23,12 @@ class IndexController extends Controller
     /** 商品展示 */
     public function index(Request $request)
     {
-        $cart_goods = CartModel::all();
+        $cart_goods = CartModel::where(['uid'=>$this->uid])->get()->toArray();
 
         if(empty($cart_goods)){
-            exit("购物车是空的");
+            die("购物车是空的");
         }
         $cart = [
-            'uid' => $this->uid,
             'cart' => $cart_goods
         ];
         return view('cart.index',$cart);
@@ -76,6 +75,7 @@ class IndexController extends Controller
             'uid' => session()->get('uid')
         ];
         $CartModel = CartModel::where($first)->first();
+        //重复 追加
         if(!empty($CartModel)){
             if($CartModel['num']+$num>$store_num){
                 $response = [
@@ -97,16 +97,17 @@ class IndexController extends Controller
                 return $response;
             }
             $response = [
-                'error' => 0,
+                'errno' => 0,
                 'msg'   => '添加成功'
             ];
             return $response;
         }
-
+        $price = GoodsModel::where($goodsWhere)->value('price');
         //写入购物车表
         $data = [
             'goods_id'  => $goods_id,
             'num'       => $num,
+            'price'     => $price,
             'add_time'  => time(),
             'uid'       => $this->uid,
             'session_token' => session()->get('u_token')
@@ -122,7 +123,7 @@ class IndexController extends Controller
         }
 
         $response = [
-            'error' => 0,
+            'errno' => 0,
             'msg'   => '添加成功'
         ];
         return $response;

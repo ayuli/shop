@@ -4,22 +4,32 @@
         <h1>购物车</h1>
         <table class="table table-hover">
             <thead>
-            <td>ID</td><td>GOODS_ID</td><td>NUM</td><td>TIME</td><td>UID</td><td></td>
+            <td></td><td>ID</td><td>GOODS_ID</td><td>NUM</td><td>PRICE</td><td>TIME</td><td>UID</td><td></td>
             </thead>
             <tbody>
             @foreach($cart as $v)
                 <tr>
-                    <td>{{$v['id']}}</td><td>{{$v['goods_id']}}</td><td>{{$v['num']}}</td><td>{{$v['add_time']}}</td><td>{{$v['uid']}}</td>
+                    <td>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="inlineCheckbox" value="{{$v['id']}}">
+                        </label>
+                    </td>
+                    <td>{{$v['id']}}</td><td>{{$v['goods_id']}}</td><td>{{$v['num']}}</td><td>{{$v['price']}}</td><td>{{$v['add_time']}}</td><td>{{$v['uid']}}</td>
                     <td><button type="button" class="btn btn-primary" cart_id="{{$v['id']}}">删除</button></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+        <div style="margin-left: 800px;">
+            <botton type="button" class="btn btn-warning btn-lg btn-block">生成订单</botton>
+        </div>
+
 @endsection
 
 @section('footer')
     @parent
     <script src="{{URL::asset('/js/goods/goodsDel.js')}}"></script>
+    <script src="{{URL::asset('/js/order/order.js')}}"></script>
 @endsection
 
 

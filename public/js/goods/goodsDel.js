@@ -1,4 +1,4 @@
-$(".btn").click(function(e){
+$(".btn-primary").click(function(e){
     e.preventDefault();
     var cart_id = $(this).attr('cart_id');
     // console.log(cart_id)
@@ -15,8 +15,8 @@ $(".btn").click(function(e){
             if(d.error==301){
                 window.location.href=d.url;
             }else{
-
-                alert(d.msg);
+                $('.alert').remove();
+                $('h1').before("<div class='alert alert-success' role='alert'>"+d.msg+"</div>")
             }
         }
     });

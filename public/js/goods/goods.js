@@ -13,10 +13,17 @@ $("#add_cart_btn").click(function(e){
         dataType:   'json',
         success :   function(d){
             // console.log(d)
-            if(d.error==301){
+            if(d.errno==301){
                 window.location.href=d.url;
+            }else if(d.errno==5001){
+                $('.alert').remove();
+                $('h1').before("<div class='alert alert-warning' role='alert'>"+d.msg+"</div>")
+            }else if(d.errno==5002){
+                $('.alert').remove();
+                $('h1').before("<div class='alert alert-danger' role='alert'>"+d.msg+"</div>")
             }else{
-                alert(d.msg);
+                $('.alert').remove();
+                $('h1').before("<div class='alert alert-success' role='alert'>"+d.msg+"</div>")
             }
         }
     });
