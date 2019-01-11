@@ -3,8 +3,14 @@
 @extends('layouts.bst')
 
 @section('content')
-    <h1>{{$title}}</h1>
-        <table class="table table-bordered">
+
+
+    <div class="jumbotron">
+        <h1>{{$title}}</h1>
+        <p>以下是所有用户</p>
+    </div>
+
+    <table class="table table-bordered">
             <thead>
                 <td>ID</td><td>nick_name</td><td>age</td><td>tel</td><td>reg_time</td>
             </thead>
