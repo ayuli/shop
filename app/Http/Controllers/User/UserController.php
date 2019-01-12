@@ -50,7 +50,7 @@ class UserController extends Controller
         if($uid){
             $token = substr(md5(time().mt_rand(1,99999)),10,10);
             header('refresh:2;url=/user/center');
-            setcookie('uid',$uid,time()+86400,'/','shop.com',false,true);
+            setcookie('uid',$uid,time()+86400,'/','',false,true);
             setcookie('token',$token,time()+86400,'/user','',false,true);
 
             $request->session()->put('u_token',$token);
@@ -78,7 +78,7 @@ class UserController extends Controller
         if($we){
             if($re){
                 $token = substr(md5(time().mt_rand(1,99999)),10,10);
-                setcookie('uid',$we->uid,time()+86400,'/','shop.com',false,true);
+                setcookie('uid',$we->uid,time()+86400,'/','',false,true);
                 setcookie('token',$token,time()+86400,'/user','',false,true);
 
                 $request->session()->put('u_token',$token);
