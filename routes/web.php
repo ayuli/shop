@@ -97,3 +97,7 @@ Route::get('/order/pay/{order_id}','Order\IndexController@pay')->middleware('che
 Route::get('/order/payo/{order_id}','Order\IndexController@payo')->middleware('check.login.token');//执行支付
 Route::get('/order/off/{order_id}','Order\IndexController@off')->middleware('check.login.token');//取消订单
 Route::get('/order/refund/{order_id}','Order\IndexController@refund')->middleware('check.login.token');//取消订单
+
+
+//支付
+Route::get('/pay/alipay/test','Pay\AlipayController@test');         //测试
