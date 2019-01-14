@@ -11,15 +11,14 @@ class AlipayController extends Controller
 {
 
     public $app_id = '2016092200571678';    //APPID
-    public $gete_way = 'https://openapi.alipaydev.com/gateway.do';   //跳转地址
-    public $notify_url = '';    //回调地址
+    public $gate_way = 'https://openapi.alipaydev.com/gateway.do';  //跳转地址
+    public $notify_url = 'http://shop.comcto.com/pay/alipay/notify';  //回调地址
     public $rsaPrivateKeyFilePath = './key/priv.key'; //私钥目录
 
     /** 请求订单服务 处理订单逻辑 */
 
     public function test()
     {
-
         $bizcont = [
             'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6),
             'out_trade_no'      => 'oid'.date('YmdHis').mt_rand(1111,2222),
@@ -60,7 +59,6 @@ class AlipayController extends Controller
 
         $priKey = file_get_contents($this->rsaPrivateKeyFilePath);
         $res = openssl_get_privatekey($priKey);
-
         ($res) or die('您使用的私钥格式错误，请检查RSA私钥配置');
 
         openssl_sign($data, $sign, $res, OPENSSL_ALGO_SHA256);

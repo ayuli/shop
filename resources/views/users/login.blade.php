@@ -1,7 +1,6 @@
 @extends('layouts.bst')
 
 @section('content')
-    <div style="width: 800px;">
      <form action="/user/login" method="post">
          {{csrf_field()}}
          <h2 class="form-signin-heading">请登录</h2>
@@ -16,5 +15,4 @@
          </div>
          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
-    </div>
 @endsection
