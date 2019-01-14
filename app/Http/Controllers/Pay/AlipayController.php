@@ -10,16 +10,21 @@ use GuzzleHttp\Client;
 class AlipayController extends Controller
 {
 
-    public $app_id = null;    //APPID
-    public $gate_way = NULL;  //跳转地址
-    public $notify_url = NULL;  //回调地址
+    public $app_id;    //APPID
+    public $gate_way;  //跳转地址
+    public $notify_url;  // 异步回调地址
+    public $return_url;    //  同步回调地址
     public $rsaPrivateKeyFilePath = './key/priv.key'; //私钥目录
+    public $aliPubKey = './key/ali_pub.key';
+
 
     public function __construct()
     {
         $this->app_id=env('ALIPAY_APP_ID');
         $this->gate_way=env('ALIPAY_GATE_WAY');
         $this->notify_url=env('ALIPAY_NOTILY_URL');
+        $this->return_url = env('ALIPAY_RETURN_URL');
+
     }
 
     /** 请求订单服务 处理订单逻辑 */
@@ -43,6 +48,7 @@ class AlipayController extends Controller
             'timestamp'   => date('Y-m-d H:i:s'),
             'version'   => '1.0',
             'notify_url'   => $this->notify_url,
+            'return_url'   =>$this->return_url,
             'biz_content'   => json_encode($bizcont),
         ];
 
@@ -132,9 +138,61 @@ class AlipayController extends Controller
     }
 
 
-    // 支付成功 回调
-    public function notify()
+    /**
+     * 支付宝同步通知回调
+     */
+    public function aliReturn()
     {
-        echo "成功";
+        echo '<pre>';print_r($_GET);echo '</pre>';
+//        echo "支付成功";
+        //验签 支付宝的公钥
+        if(!$this->verify()){
+            echo 'error';
+        }
+
+        //处理订单逻辑
+        $this->dealOrder($_GET);
+    }
+
+    /**
+     * 支付宝异步通知
+     */
+    public function aliNotify()
+    {
+
+        $data = json_encode($_POST);
+        $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
+        //记录日志
+        file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        //验签
+        $res = $this->verify();
+        if($res === false){
+            echo 'error';
+            //记录日志 验签失败
+        }
+
+        //处理订单逻辑
+//        $this->dealOrder($_POST);
+
+        echo 'success';
+    }
+
+
+    //验签
+    function verify() {
+        return true;
+    }
+
+    /**
+     * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
+     * @param $data
+     */
+    public function dealOrder($data)
+    {
+
+        echo "支付成功";
+        //加积分
+
+        //减库存
     }
 }
