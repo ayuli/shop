@@ -36,9 +36,12 @@
                         </div>
                         <button type="submit" class="btn btn-default">Submit</button>
                     </form>
+                    @if(session('uid')=='')
                     <li><a href="/user/login" >登陆</a></li>
                     <li><a href="/user/reg" >注册</a></li>
-                    <li class="dropdown">
+                    @else
+                        <li><a href="/user/reg" >注册</a></li>
+                        <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true">个人中心</span> <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">个人资料</a></li>
@@ -49,7 +52,8 @@
                             <li role="separator" class="divider"></li>
                             <li><a href="/user/quit" >退出</a></li>
                         </ul>
-                    </li>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>

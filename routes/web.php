@@ -94,3 +94,4 @@ Route::get('/order/refund/{order_id}','Order\IndexController@refund')->middlewar
 
 //支付
 Route::get('/pay/alipay/test','Pay\AlipayController@test');         //测试
+Route::get('/pay/alipay/notify','Pay\AlipayController@notify');  //回调

@@ -25,9 +25,7 @@
             @endforeach
             </tbody>
         </table>
-        <div style="margin-left: 1000px;">
             <botton type="button" class="btn btn-warning btn-lg ">生成订单</botton>
-        </div>
 
 @endsection
 

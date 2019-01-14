@@ -10,10 +10,17 @@ use GuzzleHttp\Client;
 class AlipayController extends Controller
 {
 
-    public $app_id = '2016092200571678';    //APPID
-    public $gate_way = 'https://openapi.alipaydev.com/gateway.do';  //跳转地址
-    public $notify_url = 'http://shop.comcto.com/pay/alipay/notify';  //回调地址
+    public $app_id = null;    //APPID
+    public $gate_way = NULL;  //跳转地址
+    public $notify_url = NULL;  //回调地址
     public $rsaPrivateKeyFilePath = './key/priv.key'; //私钥目录
+
+    public function __construct()
+    {
+        $this->app_id=env('ALIPAY_APP_ID');
+        $this->gate_way=env('ALIPAY_GATE_WAY');
+        $this->notify_url=env('ALIPAY_NOTILY_URL');
+    }
 
     /** 请求订单服务 处理订单逻辑 */
 
@@ -122,5 +129,12 @@ class AlipayController extends Controller
 
 
         return $data;
+    }
+
+
+    // 支付成功 回调
+    public function notify()
+    {
+        echo "成功";
     }
 }

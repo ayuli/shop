@@ -20,13 +20,14 @@ class IndexController extends Controller
         });
     }
 
-    /** 商品展示 */
+    /** 购物车展示 */
     public function index(Request $request)
     {
-        $cart_goods = CartModel::where(['uid'=>$this->uid])->get()->toArray();
+        $cart_goods = CartModel::where(['uid'=>$this->uid])->get();
 
         if(empty($cart_goods)){
-            die("购物车是空的");
+            echo "购物车是空的,请添加商品";
+            header("refresh:3;url=/goods");
         }
         $cart = [
             'cart' => $cart_goods
