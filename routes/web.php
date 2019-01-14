@@ -12,14 +12,7 @@
 */
 
 Route::get('/', function () {
-//    phpinfo();
-    //echo '<pre>';print_r($_SESSION);echo '</pre>';
-//    echo '<pre>';print_r($_COOKIE);echo '</pre>';
-    //return view('welcome');
-});
-
-Route::get('/info',function(){
-    phpinfo();
+    return view('welcome');
 });
 
 Route::get('/adduser','User\UserController@add');
