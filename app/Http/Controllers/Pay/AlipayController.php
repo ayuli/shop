@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pay;
 
 use App\Model\OrderModel;
+use App\Model\GoodsModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -199,7 +200,8 @@ class AlipayController extends Controller
     {
 //        print_r($_POST);
         echo '<pre>';print_r($_GET);echo '</pre>';
-//        echo "支付成功";
+        echo "订单:".$_GET['out_trade_no']."支付成功";
+        echo "支付金额为:".$_GET['total_amount'];
         //验签 支付宝的公钥
 //        if(!$this->verify()){
 //            echo 'error';
@@ -226,28 +228,11 @@ class AlipayController extends Controller
             //记录日志 验签失败
         }
 
-        //处理订单逻辑
-        $this->dealOrder($_POST);
 
-        echo 'success';
-    }
-
-
-    //验签
-    function verify() {
-        return true;
-    }
-
-    /**
-     * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
-     * @param $data
-     */
-    public function dealOrder($data)
-    {
 
         // 减库存
         $orderWhere = [
-            'order_id' => $data['out_trade_no']
+            'order_id' => $_POST['out_trade_no']
         ];
         $order = OrderModel::where($orderWhere)->first()->toArray();
         $goodsWhere = [
@@ -271,5 +256,28 @@ class AlipayController extends Controller
             'plat'          => 1, // 平台编号 1 支付宝 2 微信
         ];
         OrderModel::where($orderWhere)->update($orderData);
+
+
+
+        //处理订单逻辑
+//        $this->dealOrder($_POST);
+
+        echo 'success';
+    }
+
+
+    //验签
+    function verify() {
+        return true;
+    }
+
+    /**
+     * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
+     * @param $data
+     */
+    public function dealOrder($data)
+    {
+
+
     }
 }

@@ -45,7 +45,6 @@
 
 @section('footer')
     @parent
-    <script src="{{URL::asset('/js/order/pay.js')}}"></script>
 @endsection
 
 
