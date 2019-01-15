@@ -17,12 +17,16 @@ $('.btn-warning').click(function (e) {
         data        :   {cart_id:va},
         dataType    :   'json',
         success     :   function (d) {
-            console.log(d)
-            // if(d.error==301){
-            //     window.location.href=d.url;
-            // }else{
-            //     location.href='/order/pay/'+va;
-            // }
+            // console.log(d)
+            if(d.errno==301){
+                window.location.href=d.url;
+            }else if(d.errno==5002){
+                $('.alert').remove();
+                $('h1').before("<div class='alert alert-danger' role='alert'>"+d.msg+"</div>")
+            }else{
+                $('.alert').remove();
+                $('h1').before("<div class='alert alert-success' role='alert'>"+d.msg+"</div>")
+            }
         }
     })
 

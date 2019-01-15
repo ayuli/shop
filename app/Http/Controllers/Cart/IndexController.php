@@ -64,6 +64,7 @@ class IndexController extends Controller
         ];
         //检查库存
         $store_num = GoodsModel::where($goodsWhere)->value('store');
+//        print_r($store_num);die;
         if($store_num<=0&&$num>$store_num){
             $response = [
                 'errno' => 5001,

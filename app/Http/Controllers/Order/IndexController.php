@@ -31,6 +31,7 @@ class IndexController extends Controller
         $cart_id = $request->input('cart_id');
         $order = rtrim($cart_id,',');
 //        echo $order;die;
+
         if(substr_count($order,',')>=1){
             // 多少个商品结算 总价 多少个订单 删除多少个购物车数据
             $this->orderMore($order);
@@ -41,7 +42,7 @@ class IndexController extends Controller
 
         $response = [
             'errno' => 0,
-            'msg'   => '下单成功'
+            'msg'   => '下单成功,请去我的订单支付'
         ];
         return $response;
 
@@ -77,6 +78,17 @@ class IndexController extends Controller
     public function orderSingle($order){
         //查询购物车商品
         $cart_goods = CartModel::where(['uid'=>session()->get('uid'),'id'=>$order])->first();
+//        print_r($cart_goods);die;
+        //验证库存
+        $goods_num = GoodsModel::where(['goods_id'=>$cart_goods['goods_id']])->value('store');
+//        echo $goods_num;die;
+        if($cart_goods['num']>$goods_num){
+            $response = [
+                'errno' => 5002,
+                'msg'   => '库存不足'
+            ];
+            return $response;
+        }
         if(empty($cart_goods)){
             die("购物车中无商品");
         }
@@ -99,7 +111,7 @@ class IndexController extends Controller
         $oid = OrderModel::insertGetId($data);
         if(!$oid){
             $response = [
-                'error' => 5002,
+                'errno' => 5002,
                 'msg'   => '添加订单失败'
             ];
             return $response;
