@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        \App\Console\Commands\Test::class,
+        Commands\Test::class,
     ];
 
     /**
@@ -28,7 +28,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        Log::info('zddddd');
          $schedule->command('testconsole')  //Test.php中的name
                   ->everyMinute();  //每一分钟执行一次
     }
