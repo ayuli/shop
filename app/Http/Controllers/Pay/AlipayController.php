@@ -77,7 +77,6 @@ class AlipayController extends Controller
         foreach($data as $k=>$v){
             $param_str .= $k.'='.urlencode($v) . '&';
         }
-
         $url = rtrim($param_str,'&');
         $url = $this->gate_way . $url;
         header("Location:".$url);
@@ -199,7 +198,7 @@ class AlipayController extends Controller
     public function aliReturn()
     {
 //        print_r($_POST);
-        echo '<pre>';print_r($_GET);echo '</pre>';
+        echo '</pre>';print_r($_GET);echo '</pre>';
         echo "订单:".$_GET['out_trade_no']."支付成功";
         echo "支付金额为:".$_GET['total_amount'];
         //验签 支付宝的公钥
