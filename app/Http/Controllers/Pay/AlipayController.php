@@ -220,15 +220,58 @@ class AlipayController extends Controller
         $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
         //记录日志
         file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+
+
         //验签
-        $res = $this->verify();
+        $res = $this->verify($_POST);
+        $log_str = '>>>> ' . date('Y-m-d H:i:s');
+
         if($res === false){
-            echo 'error';
             //记录日志 验签失败
+            $log_str .= " Sign Failed!<<<<< \n\n";
+            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        }else{
+            $log_str .= " Sign OK!<<<<< \n\n";
+            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
         }
 
 
+        //处理订单逻辑
+        $this->dealOrder($_POST);
 
+        echo 'success';
+    }
+
+    //验签
+    function verify($params) {
+        $sign = $params['sign'];
+        $params['sign_type'] = null;
+        $params['sign'] = null;
+
+        //读取公钥文件
+        $pubKey = file_get_contents($this->aliPubKey);
+        $pubKey = "-----BEGIN PUBLIC KEY-----\n" .
+            wordwrap($pubKey, 64, "\n", true) .
+            "\n-----END PUBLIC KEY-----";
+        //转换为openssl格式密钥
+
+        $res = openssl_get_publickey($pubKey);
+        ($res) or die('支付宝RSA公钥错误。请检查公钥文件格式是否正确');
+
+        //调用openssl内置方法验签，返回bool值
+
+        $result = (openssl_verify($this->getSignContent($params), base64_decode($sign), $res, OPENSSL_ALGO_SHA256)===1);
+        openssl_free_key($res);
+
+        return $result;
+    }
+
+    /**
+     * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
+     * @param $data
+     */
+    public function dealOrder($_POST)
+    {
         // 减库存
         $orderWhere = [
             'order_id' => $_POST['out_trade_no']
@@ -255,27 +298,6 @@ class AlipayController extends Controller
             'plat'          => 1, // 平台编号 1 支付宝 2 微信
         ];
         OrderModel::where($orderWhere)->update($orderData);
-
-
-
-        //处理订单逻辑
-//        $this->dealOrder($_POST);
-
-        echo 'success';
-    }
-
-
-    //验签
-    function verify() {
-        return true;
-    }
-
-    /**
-     * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
-     * @param $data
-     */
-    public function dealOrder($data)
-    {
 
 
     }
