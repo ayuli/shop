@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class Test extends Command
 {
@@ -11,7 +12,7 @@ class Test extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'testconsole';
 
     /**
      * The console command description.
@@ -38,5 +39,6 @@ class Test extends Command
     public function handle()
     {
         //
+        Log::info('每分钟输出一次时间到日志'.date('Y-m-d H:i:s'));
     }
 }

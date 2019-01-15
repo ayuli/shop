@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+use Illuminate\Support\Facades\Log;
 use App\Model\OrderModel;
 
 class Kernel extends ConsoleKernel
@@ -16,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-//        \App\Console\Commands\Test::class,
+        \App\Console\Commands\Test::class,
     ];
 
     /**
@@ -27,18 +28,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-//         $schedule->command('command:name')  //Test.php中的name
-//                  ->everyMinute();  //每一分钟执行一次
-
-        $schedule->call(function () {
-
-            $order = OrderModel::all();
-            foreach($order as $v){
-                if(time() - $v['add_time'] > 300){
-                    OrderModel::where(['order_id'=>$v['order_id']])->delete();
-                }
-            }
-        })->everyMinute();
+        Log::info('zddddd');
+         $schedule->command('testconsole')  //Test.php中的name
+                  ->everyMinute();  //每一分钟执行一次
     }
 
     /**
