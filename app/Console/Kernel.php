@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        Commands\Test::class,
+//        Commands\Test::class,
     ];
 
     /**
@@ -28,8 +28,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('testconsole')  //Test.php中的name
-                  ->everyMinute();  //每一分钟执行一次
+//         $schedule->command('testconsole')  //Test.php中的name
+//                  ->everyMinute();  //每一分钟执行一次
+        $schedule->call(function () {
+
+            $order = OrderModel::all();
+            foreach($order as $v){
+                if(time() - $v['add_time'] > 300){
+                    OrderModel::where(['order_id'=>$v['order_id']])->delete();
+                }
+            }
+
+        })->everyMinute();
     }
 
     /**
