@@ -137,43 +137,7 @@ class IndexController extends Controller
     }
 
     /** 执行支付 */
-    public function payo($order_id)
-    {
-        // 减库存
-        $orderWhere = [
-            'order_id' => $order_id
-        ];
-        $order = OrderModel::where($orderWhere)->first()->toArray();
-        // 验证 订单是否存在
-        if(empty($order)){
-            die('订单不存在!');
-        }
-        // 验证 订单是否支付 已过期 已删除
-        if($order['pay_time']>0){
-            die('此订单已被支付，无法再次支付');
-        }
 
-        $goodsWhere = [
-            'goods_id' =>$order['goods_id']
-        ];
-        $goods = GoodsModel::where($goodsWhere)->first();
-        $goodsData = [
-            'store' => $goods['store']-$order['pay_num']
-        ];
-        if($goodsData<=0){
-            exit('库存不足');
-        }
-        GoodsModel::where($goodsWhere)->update($goodsData);
-
-        // 修改订单状态
-
-        $orderData = [
-            'pay_time'      =>  time(),
-            'is_pay'        =>  2,
-        ];
-        OrderModel::where($orderWhere)->update($orderData);
-        header('location:/pay/alipay/test');
-    }
 
     /** 取消订单 */
     public function off($order_id)

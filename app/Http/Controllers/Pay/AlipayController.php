@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pay;
 
+use App\Model\OrderModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -28,13 +29,66 @@ class AlipayController extends Controller
     }
 
     /** 请求订单服务 处理订单逻辑 */
+    public function payo($order_id)
+    {
+//        echo $order_id;die;
+        $orderWhere = [
+            'order_id' => $order_id
+        ];
+        $order = OrderModel::where($orderWhere)->first()->toArray();
+        // 验证 订单是否存在
+        if(empty($order)){
+            die('订单不存在!');
+        }
+        // 验证 订单是否支付 已过期 已删除
+        if($order['pay_time']>0){
+            die('此订单已被支付，无法再次支付');
+        }
+        if($order['is_delete']==2){
+            die('此订单已被删除，无法再次支付');
+        }
+
+        // 业务参数
+        $bizcont = [
+            'subject'       => 'yyyyyy',
+            'out_trade_no'      => $order_id,
+            'total_amount'      => $order['order_amount'],
+            'product_code'      => 'QUICK_WAP_WAY',
+        ];
+//        print_r($bizcont);die;
+        //公共参数
+        $data = [
+            'app_id'   => $this->app_id,
+            'method'   => 'alipay.trade.wap.pay',
+            'format'   => 'JSON',
+            'charset'   => 'utf-8',
+            'sign_type'   => 'RSA2',
+            'timestamp'   => date('Y-m-d H:i:s'),
+            'version'   => '1.0',
+            'notify_url'   => $this->notify_url,        //异步通知地址
+            'return_url'   => $this->return_url,        // 同步通知地址
+            'biz_content'   => json_encode($bizcont),
+        ];
+        //签名
+        $sign = $this->rsaSign($data);
+        $data['sign'] = $sign;
+        $param_str = '?';
+        foreach($data as $k=>$v){
+            $param_str .= $k.'='.urlencode($v) . '&';
+        }
+
+        $url = rtrim($param_str,'&');
+        $url = $this->gate_way . $url;
+        header("Location:".$url);
+
+    }
 
     public function test()
     {
         $bizcont = [
-            'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6),
+            'subject'           => 'yyyyyy',
             'out_trade_no'      => 'oid'.date('YmdHis').mt_rand(1111,2222),
-            'total_amount'      => 0.01,
+            'total_amount'      => 1,
             'product_code'      => 'QUICK_WAP_WAY',
 
         ];
@@ -143,15 +197,16 @@ class AlipayController extends Controller
      */
     public function aliReturn()
     {
+//        print_r($_POST);
         echo '<pre>';print_r($_GET);echo '</pre>';
 //        echo "支付成功";
         //验签 支付宝的公钥
-        if(!$this->verify()){
-            echo 'error';
-        }
+//        if(!$this->verify()){
+//            echo 'error';
+//        }
 
         //处理订单逻辑
-        $this->dealOrder($_GET);
+//        $this->dealOrder($_GET);
     }
 
     /**
@@ -172,7 +227,7 @@ class AlipayController extends Controller
         }
 
         //处理订单逻辑
-//        $this->dealOrder($_POST);
+        $this->dealOrder($_POST);
 
         echo 'success';
     }
@@ -190,9 +245,31 @@ class AlipayController extends Controller
     public function dealOrder($data)
     {
 
-        echo "支付成功";
-        //加积分
+        // 减库存
+        $orderWhere = [
+            'order_id' => $data['out_trade_no']
+        ];
+        $order = OrderModel::where($orderWhere)->first()->toArray();
+        $goodsWhere = [
+            'goods_id' =>$order['goods_id']
+        ];
+        $goods = GoodsModel::where($goodsWhere)->first();
+        $goodsData = [
+            'store' => $goods['store']-$order['pay_num']
+        ];
+        if($goodsData<=0){
+            exit('库存不足');
+        }
+        GoodsModel::where($goodsWhere)->update($goodsData);
 
-        //减库存
+        // 修改订单状态
+
+        $orderData = [
+            'pay_amount'   => $_POST['total_amount'],
+            'pay_time'      =>  time(),
+            'is_pay'        =>  2,   //1未支付  2 已支付
+            'plat'          => 1, // 平台编号 1 支付宝 2 微信
+        ];
+        OrderModel::where($orderWhere)->update($orderData);
     }
 }

@@ -93,7 +93,7 @@ Route::get('/order/refund/{order_id}','Order\IndexController@refund')->middlewar
 
 
 //支付
-//Route::get('/alipay/payo/{order_id}','Pay\AlipayController@test');         //测试
-Route::get('/pay/alipay/test','Pay\AlipayController@test');         //测试
+Route::get('/alipay/payo/{order_id}','Pay\AlipayController@payo');         //测试
+//Route::get('/pay/alipay/test/{order_id}','Pay\AlipayController@test');         //测试
 Route::post('/pay/alipay/notify','Pay\AlipayController@aliNotify');  // 异步
 Route::get('/pay/alipay/return','Pay\AlipayController@aliReturn');   //支付宝支付 同步通知回调
