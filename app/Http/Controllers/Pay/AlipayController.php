@@ -270,11 +270,11 @@ class AlipayController extends Controller
      * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
      * @param $data
      */
-    public function dealOrder($_POST)
+    public function dealOrder($data)
     {
         // 减库存
         $orderWhere = [
-            'order_id' => $_POST['out_trade_no']
+            'order_id' => $data['out_trade_no']
         ];
         $order = OrderModel::where($orderWhere)->first()->toArray();
         $goodsWhere = [
