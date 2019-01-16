@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
 //
 //            $order = OrderModel::all();
 //            foreach($order as $v){
-//                if(time() - $v['add_time'] > 300){
+//                if(time() - $v['add_time']>300){
 //                    OrderModel::where(['order_id'=>$v['order_id']])->delete();
 //                }
 //            }
