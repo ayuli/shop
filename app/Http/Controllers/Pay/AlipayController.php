@@ -198,14 +198,14 @@ class AlipayController extends Controller
     public function aliReturn()
     {
 //        print_r($_POST);
-        echo '</pre>';print_r($_GET);echo '</pre>';
+//        echo '</pre>';print_r($_GET);echo '</pre>';
         echo "订单:".$_GET['out_trade_no']."支付成功";
         echo "支付金额为:".$_GET['total_amount'];
         //验签 支付宝的公钥
 //        if(!$this->verify()){
 //            echo 'error';
 //        }
-
+        header('refresh:2;url=/order');
         //处理订单逻辑
 //        $this->dealOrder($_GET);
     }
