@@ -2,76 +2,131 @@
 
 namespace App\Admin\Controllers;
 
-use Encore\Admin\Controllers\HasResourceActions;
-use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\Dashboard;
-use Encore\Admin\Layout\Column;
-use Encore\Admin\Layout\Content;
-use Encore\Admin\Layout\Row;
-use Encore\Admin\Grid;
-use Encore\Admin\Form;
-
 use App\Model\GoodsModel;
+use App\Http\Controllers\Controller;
+use Encore\Admin\Controllers\HasResourceActions;
+use Encore\Admin\Form;
+use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Show;
 
 class GoodsController extends Controller
 {
     use HasResourceActions;
-    /** 默认访问index */
+
+    /**
+     * Index interface.
+     *
+     * @param Content $content
+     * @return Content
+     */
     public function index(Content $content)
     {
         return $content
-            ->header('商品管理')
-            ->description('商品列表')
-            ->body($this->grid());  // 列表
+            ->header('Index')
+            ->description('description')
+            ->body($this->grid());
     }
-    /** 展示 */
+
+    /**
+     * Show interface.
+     *
+     * @param mixed $id
+     * @param Content $content
+     * @return Content
+     */
+    public function show($id, Content $content)
+    {
+        return $content
+            ->header('Detail')
+            ->description('description')
+            ->body($this->detail($id));
+    }
+
+    /**
+     * Edit interface.
+     *
+     * @param mixed $id
+     * @param Content $content
+     * @return Content
+     */
+    public function edit($id, Content $content)
+    {
+        return $content
+            ->header('Edit')
+            ->description('description')
+            ->body($this->form()->edit($id));
+    }
+
+    /**
+     * Create interface.
+     *
+     * @param Content $content
+     * @return Content
+     */
+    public function create(Content $content)
+    {
+        return $content
+            ->header('Create')
+            ->description('description')
+            ->body($this->form());
+    }
+
+    /**
+     * Make a grid builder.
+     *
+     * @return Grid
+     */
     protected function grid()
     {
-        $grid = new Grid(new GoodsModel());
-
-        $grid->model()->orderBy('goods_id','desc');     //倒序排序
+        $grid = new Grid(new GoodsModel);
 
         $grid->goods_id('商品ID');
         $grid->goods_name('商品名称');
+        $grid->add_time('Add time');
         $grid->store('库存');
+        $grid->cat_id('分类ID');
+        $grid->created_at('添加时间');
         $grid->price('价格');
-        $grid->add_time('添加时间')->display(function($time){
-            return date('Y-m-d H:i:s',$time);
-        });
 
         return $grid;
     }
 
-
-    public function edit($id, Content $content)
+    /**
+     * Make a show builder.
+     *
+     * @param mixed $id
+     * @return Show
+     */
+    protected function detail($id)
     {
-        return $content
-            ->header('商品管理')
-            ->description('编辑')
-            ->body($this->form()->edit($id));
+        $show = new Show(GoodsModel::findOrFail($id));
+
+        $show->goods_id('Goods id');
+        $show->goods_name('Goods name');
+        $show->add_time('Add time');
+        $show->store('Store');
+        $show->cat_id('Cat id');
+        $show->created_at('Created at');
+        $show->price('Price');
+
+        return $show;
     }
 
-
-
-    //创建
-    public function create(Content $content)
-    {
-
-        return $content
-            ->header('商品管理')
-            ->description('添加')
-            ->body($this->form());
-    }
-
-
+    /**
+     * Make a form builder.
+     *
+     * @return Form
+     */
     protected function form()
     {
-        $form = new Form(new GoodsModel());
+        $form = new Form(new GoodsModel);
 
-        $form->display('goods_id', '商品ID');
-        $form->text('goods_name', '商品名称');
-        $form->number('store', '库存');
-        $form->currency('price', '价格')->symbol('¥');
+        $form->text('goods_name', 'Goods name');
+        $form->number('add_time', 'Add time');
+        $form->number('store', 'Store');
+        $form->number('cat_id', 'Cat id');
+        $form->number('price', 'Price');
 
         return $form;
     }
