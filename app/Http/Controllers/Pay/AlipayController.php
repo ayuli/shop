@@ -22,7 +22,7 @@ class AlipayController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
         $this->app_id=env('ALIPAY_APP_ID');
         $this->gate_way=env('ALIPAY_GATE_WAY');
         $this->notify_url=env('ALIPAY_NOTILY_URL');
