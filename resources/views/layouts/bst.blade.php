@@ -25,7 +25,6 @@
             </div>
             <div class="navbar-collapse collapse" role="navigation">
                 <ul class="nav navbar-nav">
-                    <li class="hidden-sm hidden-md"><a href="">Bootstrap2</a></li>
                     <li><a href="/goods"  >Bootstrap商品表</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right hidden-sm">
@@ -41,7 +40,6 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">个人资料</a></li>
                             <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a class="reddot" href="/order" >我的订单</a></li>
                             <li role="separator" class="divider"></li>

@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\clickLog;
 
 class Kernel extends HttpKernel
 {
@@ -24,7 +25,7 @@ class Kernel extends HttpKernel
 
     /**
      * The application's route middleware groups.
-     *
+     * 路由组
      * @var array
      */
     protected $middlewareGroups = [
@@ -37,6 +38,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+        //资源路由组
+//        'log.click' =>[
+//            clickLog::class
+//        ],
 
         'api' => [
             'throttle:60,1',

@@ -50,6 +50,15 @@ Route::any('/test/abc','Test\TestController@abc');
 Route::get('/view/test1','Test\TestController@viewTest1');
 Route::get('/view/test2','Test\TestController@viewTest2');
 
+//资源 路由组  group
+//Route::middleware(['log.click'])->group(function(){
+//    Route::any('/test/guzzle','Test\TestController@guzzleTest');
+//    Route::get('/test/cookie1','Test\TestController@cookieTest1');
+//    Route::get('/test/cookie2','Test\TestController@cookieTest2');
+//    Route::get('/test/session','Test\TestController@sessionTest');
+//    Route::get('/test/mid1','Test\TestController@mid1')->middleware('check.uid'
+//    Route::get('/test/check_cookie','Test\TestController@checkCookie')->middlew
+//});
 
 
 

@@ -106,13 +106,15 @@ return [
 
     'redis' => [
 
-        'client' => 'predis',
+//        'client' => 'predis',
+        'client' => 'phpredis', //使用phpredis扩展
 
         'default' => [
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => 0,
+            'prefix' => 'lening_shop_'  //键名前缀|命名空间
         ],
 
     ],
