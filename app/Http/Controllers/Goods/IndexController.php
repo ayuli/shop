@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Model\GoodsModel;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
     //
 
-
+    public function __construct(){
+        $this->middleware('auth');
+    }
     /**
      * 商品详情
      * @param $goods_id

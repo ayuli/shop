@@ -9,12 +9,20 @@ use App\Model\CartModel;
 use App\Model\GoodsModel;
 use App\Model\OrderModel;
 
+use Illuminate\Support\Facades\Auth;
+
+
 class IndexController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth');
+    }
+
     /** 订单展示 */
     public function index()
     {
-        $order = OrderModel::where(['uid'=>session()->get('uid'),'is_delete'=>1])->get()->toArray();
+        $order = OrderModel::where(['uid'=>Auth::id(),'is_delete'=>1])->get()->toArray();
         $data = [
             'order'=>$order,
         ];
@@ -53,14 +61,14 @@ class IndexController extends Controller
         $orderArr = explode(',',$order);
         $order_amount_all = 0;
         foreach($orderArr as $v){
-            $cart_goods = CartModel::where(['uid'=>session()->get('uid'),'id'=>$v])->first()->toArray();
+            $cart_goods = CartModel::where(['uid'=>Auth::id(),'id'=>$v])->first()->toArray();
             $order_amount = $cart_goods['num']*$cart_goods['price'];
             $order_amount_all += $cart_goods['num']*$cart_goods['price'];
 //            echo $order_amount;
             $order_sn = OrderModel::OrderSN();
             $data = [
                 'order_sn'      => $order_sn,
-                'uid'           => session()->get('uid'),
+                'uid'           => Auth::id(),
                 'goods_id'      => $cart_goods['goods_id'],
                 'pay_num'       => $cart_goods['num'],
                 'add_time'      => time(),
@@ -77,7 +85,7 @@ class IndexController extends Controller
     /** 单个购物车商品订单 */
     public function orderSingle($order){
         //查询购物车商品
-        $cart_goods = CartModel::where(['uid'=>session()->get('uid'),'id'=>$order])->first();
+        $cart_goods = CartModel::where(['uid'=>Auth::id(),'id'=>$order])->first();
 //        print_r($cart_goods);die;
         //验证库存
         $goods_num = GoodsModel::where(['goods_id'=>$cart_goods['goods_id']])->value('store');
@@ -101,7 +109,7 @@ class IndexController extends Controller
         // 生成订单
         $data = [
             'order_sn'      => $order_sn,
-            'uid'           => session()->get('uid'),
+            'uid'           => Auth::id(),
             'pay_num'       => $cart_goods['num'],
             'add_time'      => time(),
             'order_amount'  => $order_amount,

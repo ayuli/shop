@@ -6,18 +6,18 @@
 
 
     <div class="jumbotron">
-        <h1>{{$title}}</h1>
+        <h1></h1>
         <p>以下是所有用户</p>
     </div>
 
     <table class="table table-bordered">
             <thead>
-                <td>ID</td><td>nick_name</td><td>age</td><td>tel</td><td>reg_time</td>
+                <td>ID</td><td>name</td><td>age</td><td>email</td><td>created_at</td>
             </thead>
             <tbody>
             @foreach($list as $v)
                 <tr>
-                    <td>{{$v['uid']}}</td><td>{{$v['nick_name']}}</td><td>{{$v['age']}}</td><td>{{$v['tel']}}</td><td>{{$v['reg_time']}}</td>
+                    <td>{{$v['id']}}</td><td>{{$v['name']}}</td><td>{{$v['email']}}</td><td>{{$v['created_at']}}</td><td>{{$v['reg_time']}}</td>
                 </tr>
             @endforeach
             </tbody>

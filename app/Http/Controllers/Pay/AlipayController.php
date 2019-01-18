@@ -22,6 +22,7 @@ class AlipayController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->app_id=env('ALIPAY_APP_ID');
         $this->gate_way=env('ALIPAY_GATE_WAY');
         $this->notify_url=env('ALIPAY_NOTILY_URL');
@@ -201,6 +202,7 @@ class AlipayController extends Controller
 //        echo '</pre>';print_r($_GET);echo '</pre>';
         echo "订单:".$_GET['out_trade_no']."支付成功";
         echo "支付金额为:".$_GET['total_amount'];
+        header('refresh:3;url:/order');
         //验签 支付宝的公钥
 //        if(!$this->verify()){
 //            echo 'error';

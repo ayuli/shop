@@ -71,11 +71,10 @@ Route::get('/mvc/bst','Mvc\MvcController@bst');
 Route::get('user/quit','User\UserController@quit');
 
 //购物车
-//Route::get('/cart','Cart\IndexController@index')->middleware('check.uid');
-Route::get('/cart','Cart\IndexController@index')->middleware('check.login.token');
-Route::get('/cart/add/{goods_id}','Cart\IndexController@add')->middleware('check.login.token');
-Route::post('/cart/add','Cart\IndexController@addo')->middleware('check.login.token');      //添加商品
-Route::post('/cart/del','Cart\IndexController@del')->middleware('check.login.token');      //删除商品
+Route::get('/cart','Cart\IndexController@index');
+Route::get('/cart/add/{goods_id}','Cart\IndexController@add');
+Route::post('/cart/add','Cart\IndexController@addo');      //添加商品
+Route::post('/cart/del','Cart\IndexController@del');     //删除商品
 
 
 // 商品表
@@ -84,12 +83,12 @@ Route::get('/goods','Goods\IndexController@index');
 
 
 // 订单表
-Route::get('/order','Order\IndexController@index')->middleware('check.login.token');//订单展示
-Route::post('/order/add','Order\IndexController@add')->middleware('check.login.token');//添加订单
-Route::get('/order/pay/{order_id}','Order\IndexController@pay')->middleware('check.login.token');//支付展示
-Route::get('/order/payo/{order_id}','Order\IndexController@payo')->middleware('check.login.token');//执行支付
-Route::get('/order/off/{order_id}','Order\IndexController@off')->middleware('check.login.token');//取消订单
-Route::get('/order/refund/{order_id}','Order\IndexController@refund')->middleware('check.login.token');//取消订单
+Route::get('/order','Order\IndexController@index');//->middleware('check.login.token');//订单展示
+Route::post('/order/add','Order\IndexController@add');//->middleware('check.login.token');//添加订单
+Route::get('/order/pay/{order_id}','Order\IndexController@pay');//->middleware('check.login.token');//支付展示
+Route::get('/order/payo/{order_id}','Order\IndexController@payo');//->middleware('check.login.token');//执行支付
+Route::get('/order/off/{order_id}','Order\IndexController@off');//->middleware('check.login.token');//取消订单
+Route::get('/order/refund/{order_id}','Order\IndexController@refund');//->middleware('check.login.token');//取消订单
 
 
 //支付
