@@ -21,7 +21,7 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $goods = GoodsModel::all();
+        $goods = GoodsModel::paginate(3);
 
         //商品不存在
         if(empty($goods)){

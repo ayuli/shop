@@ -19,6 +19,7 @@
             @endforeach
             </tbody>
         </table>
+        {{ $goods->links() }}
 
 @endsection
 {{--@section('footer')--}}
