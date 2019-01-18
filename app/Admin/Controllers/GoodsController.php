@@ -83,7 +83,7 @@ class GoodsController extends Controller
 
         $grid->goods_id('商品ID');
         $grid->goods_name('商品名称');
-        $grid->add_time('Add time');
+//        $grid->add_time('Add time');
         $grid->store('库存');
         $grid->cat_id('分类ID');
         $grid->created_at('添加时间');
@@ -103,16 +103,15 @@ class GoodsController extends Controller
         $show = new Show(GoodsModel::findOrFail($id));
 
         $show->goods_id('Goods id');
-        $show->goods_name('Goods name');
-        $show->add_time('Add time');
-        $show->store('Store');
-        $show->cat_id('Cat id');
+        $show->goods_name('商品名称');
+//        $show->add_time('Add time');
+        $show->store('库存');
+        $show->cat_id('分类ID');
         $show->created_at('Created at');
-        $show->price('Price');
+        $show->price('价格');
 
         return $show;
     }
-
     /**
      * Make a form builder.
      *
@@ -122,12 +121,12 @@ class GoodsController extends Controller
     {
         $form = new Form(new GoodsModel);
 
-        $form->text('goods_name', 'Goods name');
-        $form->number('add_time', 'Add time');
-        $form->number('store', 'Store');
-        $form->number('cat_id', 'Cat id');
-        $form->number('price', 'Price');
-
+        $form->text('goods_name', '商品名称');
+//        $form->number('add_time', 'Add time');
+        $form->number('store', '库存');
+        $form->number('cat_id', '分类ID');
+        $form->number('price', '价格');
+	    $form->ckeditor('content','详情');
         return $form;
     }
 }
