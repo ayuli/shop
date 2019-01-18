@@ -97,3 +97,7 @@ Route::get('/alipay/payo/{order_id}','Pay\AlipayController@payo');         //测
 //Route::get('/pay/alipay/test/{order_id}','Pay\AlipayController@test');         //测试
 Route::post('/pay/alipay/notify','Pay\AlipayController@aliNotify');  // 异步
 Route::get('/pay/alipay/return','Pay\AlipayController@aliReturn');   //支付宝支付 同步通知回调
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
