@@ -7,19 +7,20 @@ use App\Http\Controllers\Controller;
 
 use App\Model\GoodsModel;
 use App\Model\CartModel;
-
+use Illuminate\Support\Facades\Auth;
 class IndexController extends Controller
 {
     public $uid;
 
     public function __construct()
     {
+        $this->middleware('auth');
+
         $this->middleware(function($request,$next){
-            $this->uid = session()->get('uid');
+            $this->uid =Auth::id();
             return $next($request);
         });
     }
-
     /** 购物车展示 */
     public function index(Request $request)
     {
@@ -74,7 +75,7 @@ class IndexController extends Controller
         }
         $first = [
             'goods_id'=>$goods_id,
-            'uid' => session()->get('uid')
+            'uid' => Auth::id()
         ];
         $CartModel = CartModel::where($first)->first();
         //重复 追加
