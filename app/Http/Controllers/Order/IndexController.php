@@ -22,7 +22,7 @@ class IndexController extends Controller
     /** 订单展示 */
     public function index()
     {
-        $order = OrderModel::where(['uid'=>Auth::id(),'is_delete'=>1])->paginate()->toArray();
+        $order = OrderModel::where(['uid'=>Auth::id(),'is_delete'=>1])->paginate(3);
         $data = [
             'order'=>$order,
         ];
