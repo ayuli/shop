@@ -30,8 +30,9 @@ class IndexController extends Controller
             print_r($goods_info);
         }else{
             echo 'Mysql';
-            $goods_info = GoodsModel::paginate(3);
-            print_r($goods_info);die;
+            $goods_info = GoodsModel::get();
+//            $goods_info = GoodsModel::paginate(3);
+            print_r($goods_info);
             //写入缓存
             $rs = Redis::hmset($redis_goods_key,$goods_info);
             //设置缓存过期时间
