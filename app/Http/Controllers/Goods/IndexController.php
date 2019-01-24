@@ -35,4 +35,29 @@ class IndexController extends Controller
         ];
         return view('goods.index',$data);
     }
+
+    /** 上传 */
+    public function upload()
+    {
+        return view('goods.upload');
+    }
+
+    /**
+     * @param Request $request
+     * storeAs 文件上传时修改上传名
+     */
+    public function uploadPDF(Request $request)
+    {
+
+        $pdf = $request->file('pdf');
+//        var_dump($pdf);die;
+        $ext = $pdf->extension();
+        if($ext != 'pdf'){
+            die('请上传pdf格式的文件');
+        }
+        $res = $pdf->storeAs(date('Ymd'),str_random(5).'.pdf');
+        if($res){
+            echo "上传成功";
+        }
+    }
 }

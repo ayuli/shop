@@ -109,3 +109,8 @@ Route::get('/pay/alipay/return','Pay\AlipayController@aliReturn');   //支付宝
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+// 上传
+Route::get('/upload','Goods\IndexController@upload');
+Route::post('/goods/upload/pdf','Goods\IndexController@uploadPDF');
