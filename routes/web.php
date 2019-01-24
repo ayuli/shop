@@ -114,3 +114,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 // 上传
 Route::get('/upload','Goods\IndexController@upload');
 Route::post('/goods/upload/pdf','Goods\IndexController@uploadPDF');
+
+
+//redis 在线购票
+Route::get('/movie','Movie\IndexController@index');
+Route::get('/movie/buy/{pos}/{status}','Movie\IndexController@buy');

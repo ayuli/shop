@@ -25,7 +25,9 @@
             </div>
             <div class="navbar-collapse collapse" role="navigation">
                 <ul class="nav navbar-nav">
-                    <li><a href="/goods"  >Bootstrap商品表</a></li>
+                    <li><a href="/goods"  >商品表</a></li>
+                    <li><a href="/upload"  >上传文件</a></li>
+                    <li><a href="/movie"  >购票</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right hidden-sm">
                     <li><a href="/cart" >购物车</a></li>
