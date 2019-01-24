@@ -22,25 +22,25 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $redis_goods_key = 'h_goods_info';
-        $goods_info = Redis::hGetAll($redis_goods_key);
-        if($goods_info){
-            echo 'Redis';echo '</br>';
-            $goods_info = json_decode($goods_info);
-            print_r($goods_info);
-        }else{
-            echo 'Mysql';
+//        $redis_goods_key = 'h_goods_info';
+//        $goods_info = Redis::hGetAll($redis_goods_key);
+//        if($goods_info){
+//            echo 'Redis';echo '</br>';
+//            $goods_info = json_decode($goods_info);
+//            print_r($goods_info);
+//        }else{
+//            echo 'Mysql';
 //            $goods_info = GoodsModel::get();
             $goods_info = GoodsModel::paginate(3);
-            print_r($goods_info);
-            $goods_info = json_encode($goods_info);
-            //写入缓存
-            $rs = Redis::hMset($redis_goods_key,$goods_info);
-            //设置缓存过期时间
-            Redis::expire($redis_goods_key,10);
-        }
-
-        die;
+//            print_r($goods_info);
+//            $goods_info = json_encode($goods_info);
+//            //写入缓存
+//            $rs = Redis::hMset($redis_goods_key,$goods_info);
+//            //设置缓存过期时间
+//            Redis::expire($redis_goods_key,10);
+//        }
+//
+//        die;
 
 
         //商品不存在
