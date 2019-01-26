@@ -32,7 +32,7 @@
 @section('footer')
     @parent
     <script src="{{URL::asset('/js/goods/goodsDel.js')}}"></script>
-    <script src="{{URL::asset('/js/order/order.js')}}"></script>
+    <script src="{{URL::asset('/js/order/order.js')}}"></script> 
 @endsection
 
 
