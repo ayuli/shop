@@ -39,6 +39,7 @@ class WeixinController extends Controller
     {
         $data = file_get_contents("php://input");
 
+
         //解析XML
         $xml = simplexml_load_string($data);        //将 xml字符串 转换成对象
 
@@ -52,7 +53,7 @@ class WeixinController extends Controller
 
             echo 'openid: '.$openid;echo '</br>';
             echo '$sub_time: ' . $sub_time;
-            die;
+
             //获取用户信息
             $user_info = $this->getUserInfo($openid);
             echo '<pre>';print_r($user_info);echo '</pre>';
@@ -76,7 +77,6 @@ class WeixinController extends Controller
                 var_dump($id);
             }
         }
-
 
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
@@ -126,12 +126,14 @@ class WeixinController extends Controller
      */
     public function getUserInfo($openid)
     {
-//        $openid = 'oLreB1jAnJFzV_8AGWUZlfuaoQto';
+        //$openid = 'oLreB1jAnJFzV_8AGWUZlfuaoQto';
         $access_token = $this->getWXAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
 
         $data = json_decode(file_get_contents($url),true);
-//        echo '<pre>';print_r($data);echo '</pre>';
+        //echo '<pre>';print_r($data);echo '</pre>';
         return $data;
     }
+
+    
 }
