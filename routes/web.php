@@ -131,4 +131,4 @@ Route::post('/weixin/valid','Weixin\WeixinController@validToken');
 
 Route::get('/weixin/create_menu','Weixin\WeixinController@createMenu');     //创建菜单
 
-Route::get('/weixin/mass','Weixin\WeixinController@pushByTags');     //群发
+Route::get('/weixin/mass','Weixin\WeixinController@textGroup');     //群发
