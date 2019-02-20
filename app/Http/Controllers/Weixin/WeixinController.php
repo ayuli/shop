@@ -315,6 +315,28 @@ class WeixinController extends Controller
         echo $this->getWXAccessToken();
     }
 
-
-
+    /**
+     * 根据标签进行群发
+     */
+    public function pushByTags(){
+        $access_token=get_token();
+        $url="https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=".$access_token;
+        $data=array(
+            'filter'=>array(
+                'is_to_all'=>false,
+                'tag_id'=>135
+            ),
+            'text'=>array(
+                'content'=>'test'
+            ),
+            'msgtype'=>'text'
+        );
+        $result=json_decode(curl($url,json_encode($data)),true);
+        if($result['errcode']==0){
+            echo "群发成功";
+            M('monthtuisong')->add(array('msgid'=>$result['msg_id']));
+        }else{
+            echo "群发失败";
+        }
+    }
 }
