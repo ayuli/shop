@@ -116,7 +116,7 @@ class WeixinController extends Controller
     public function kefu01($openid,$from)
     {
         // 文本消息
-        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. 'Hello World, 现在时间'. date('Y-m-d H:i:s') .']]></Content></xml>';
+        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. '小于报导现在时间为:'. date('Y-m-d H:i:s') .']]></Content></xml>';
         echo $xml_response;
     }
 
@@ -277,8 +277,15 @@ class WeixinController extends Controller
                 ],
                 [
                     "type"  => "click",      // click类型
-                    "name"  => "客服01",
-                    "key"   => "kefu01"
+                    "name"  => "客服",
+                    "key"   => "kefu01",
+                    "sub_button" => [
+                        [
+                            'type' => "click",
+                            'name' => "二级目录",
+                            'url'  => ""
+                        ]
+                    ]
                 ]
             ],
         ];
