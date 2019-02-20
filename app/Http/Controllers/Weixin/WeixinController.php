@@ -116,7 +116,7 @@ class WeixinController extends Controller
     public function kefu01($openid,$from)
     {
         // 文本消息
-        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. '小于报导现在时间为:<br>'. date('Y-m-d H:i:s') .']]></Content></xml>';
+        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. '小于报导现在时间为:'. date('Y-m-d H:i:s') .']]></Content></xml>';
         echo $xml_response;
     }
 
@@ -272,7 +272,7 @@ class WeixinController extends Controller
             "button"    => [
                 [
                     "name"  => "百度一下",
-                    "sub_button" => [
+                    "sub_button" => [               //二级目录
                         [
                             "type"  => "view",      // view类型 跳转指定 URL
                             'name' => "网址",
@@ -322,27 +322,37 @@ class WeixinController extends Controller
     }
 
     /**
-     * 根据标签进行群发
+     * 群发
      */
-    public function pushByTags(){
-        $access_token=get_token();
-        $url="https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=".$access_token;
-        $data=array(
-            'filter'=>array(
-                'is_to_all'=>false,
-                'tag_id'=>135
-            ),
-            'text'=>array(
-                'content'=>'test'
-            ),
+    public function textGroup(){
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token='.$this->getWXAccessToken();
+        //请求微信接口
+        $client=new GuzzleHttp\Client(['base_uri' => $url]);
+        $data=[
+            'filter'=>[
+                'is_to_all'=>true,
+                'tag_id'=>2  //is_to_all为true可不填写
+            ],
+            'text'=>[
+                'content'=>'红红火火恍恍惚惚'
+            ],
             'msgtype'=>'text'
-        );
-        $result=json_decode(curl($url,json_encode($data)),true);
-        if($result['errcode']==0){
+        ];
+        $r=$client->request('post',$url,['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        //解析接口返回信息
+        $response_arr=json_decode($r->getBody(),true);
+        var_dump($response_arr);
+        if($response_arr['errcode']==0){
             echo "群发成功";
-            M('monthtuisong')->add(array('msgid'=>$result['msg_id']));
         }else{
-            echo "群发失败";
+            echo "群发失败，请重试";
+            echo "<br/>";
         }
     }
+
+
+
+
+
+
 }
