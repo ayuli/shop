@@ -15,4 +15,6 @@ Route::group([
     $router->resource('/wxuser',WeixinController::class);   //微信用户管理
     $router->resource('/wxmedia',WeixinMediaController::class);    //微信素材管理
 
+    $router->resource('/wxgroup',WeixinGroup::class);    //微信群发
+    $router->post('/wxgroup','WeixinGroup@textGroup');    //微信群发
 });
