@@ -90,7 +90,9 @@ class WeixinController extends Controller
         $grid->headimgurl('Headimgurl')->display(function ($img_url){
             return '<img src="'.$img_url.'">';
         });
-        $grid->subscribe_time('Subscribe time');
+        $grid->subscribe_time('Subscribe time')->display(function($time){
+            return date('Y-m-d H:i:s',$time);
+        });
 
         return $grid;
     }
