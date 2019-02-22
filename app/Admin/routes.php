@@ -17,4 +17,7 @@ Route::group([
 
     $router->resource('/wxgroup',WeixinGroup::class);    //微信群发
     $router->post('/wxgroup','WeixinGroup@textGroup');    //微信群发
+
+    $router->resource('/wxmanent',WeixinManentController::class);    //微信上传永久素材
+    $router->post('/wxmanent','WeixinManentController@formTest');    //微信上传永久素材
 });
