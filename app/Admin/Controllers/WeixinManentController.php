@@ -148,27 +148,27 @@ class WeixinManentController extends Controller
         $img_file = $request->file('media');
 //        echo'<pre>';print_r($img_file);echo '<pre>';
         $img_origin_name = $img_file->getClientOriginalName();
-        echo 'originName: '.$img_origin_name;echo '</br>';
+//        echo 'originName: '.$img_origin_name;echo '</br>';
         //获取文件扩展名
         $file_ext = $img_file->getClientOriginalExtension();
-        echo 'ext: '.$file_ext;echo '</br>';
+//        echo 'ext: '.$file_ext;echo '</br>';
 
         //重命名
         $new_file_name = str_random(15).'.'.$file_ext;
-        echo 'new_file_name: '.$new_file_name;echo '</br>';
+//        echo 'new_file_name: '.$new_file_name;echo '</br>';
 
         //文件保存路径
 
         //保存文件
         $save_file_path = $request->media->storeAs('form_test',$new_file_name);
-        echo 'save_file_path: '.$save_file_path;echo '</br>';
+//        echo 'save_file_path: '.$save_file_path;echo '</br>';
 
-        $this->upMaterialTest($save_file_path);
+        $this->upMaterialTest($save_file_path,$new_file_name);
     }
 
 
 
-    public function upMaterialTest($file_path)
+    public function upMaterialTest($file_path,$new_file_name)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$this->getWXAccessToken().'&type=image';
         $client = new GuzzleHttp\Client();
@@ -190,7 +190,8 @@ class WeixinManentController extends Controller
         $data = [
             'add_time'  => time(),
             'media_id'  => $d['media_id'],
-            'local_file_name'   => $d['url']
+            'local_file_name'   => $new_file_name,
+            'local_file_path'   => $d['url']
         ];
         $re = WeixinManent::insertGetId($data);
 

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Redis;
 use GuzzleHttp;
 use Illuminate\Support\Facades\Storage;
 use App\Model\WeixinMedia;
+use App\Model\WeixinChatModel;
+
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 
 class WeixinController extends Controller
@@ -58,8 +61,21 @@ class WeixinController extends Controller
         if(isset($xml->MsgType)){
             if($xml->MsgType=='text'){            //用户发送文本消息
                 $msg = $xml->Content;
-                $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. $msg. date('Y-m-d H:i:s') .']]></Content></xml>';
-                echo $xml_response;
+                //记录聊天消息
+
+                $data = [
+                    'msg'       => $xml->Content,
+                    'msgid'     => $xml->MsgId,
+                    'openid'    => $openid,
+                    'msg_type'  => 1        // 1用户发送消息 2客服发送消息
+                ];
+
+                $id = WeixinChatModel::insertGetId($data);
+                var_dump($id);
+                //$xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. $msg. date('Y-m-d H:i:s') .']]></Content></xml>';
+
+
+                //echo $xml_response;
             }elseif($xml->MsgType=='image'){       //用户发送图片信息
                 //视业务需求是否需要下载保存图片
                 if(1){  //下载图片素材
@@ -477,6 +493,78 @@ class WeixinController extends Controller
 
 
 
+    /**
+     *交互表单
+     */
+    public function interactiveForm()
+    {
+        $user = WeixinUser::where(['id'=>1])->first();
+        return view('test.interactive',['user'=>$user]);
+    }
+
+    /**
+     * 写入
+     */
+    public function write(Request $request)
+    {
+        $message = $request->input('message');
+        $openid = $request->input('openid');
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$this->getWXAccessToken();
+        $client=new GuzzleHttp\Client(['base_uri' => $url]);
+        $data = [
+                    "touser"    => $openid,
+                    "msgtype"   => "text",
+                    "text" =>
+                        [
+                            "content" => $message
+                        ],
+                ];
+        $r = $client
+            ->request('post', $url, ['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        //解析接口返回信息
+        $response_arr=json_decode($r->getBody(),true);
+        var_dump($response_arr);
+        if($response_arr['errcode']==0){
+            echo "发送成功";
+        }else{
+            echo "发送失败";
+        }
+
+
+    }
+
+    /**
+     * 微信客服聊天
+     */
+    public function chatView()
+    {
+        $data = [
+            'openid'    => 'oMgNg1XwjtrCkhfUqu6ZggUJpxGY'
+        ];
+        return view('weixin.chat',$data);
+    }
+    public function getChatMsg()
+    {
+        $openid = $_GET['openid'];  //用户openid
+        $pos = $_GET['pos'];        //上次聊天位置
+        $msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->first();
+        //$msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->get();
+        if($msg){
+            $response = [
+                'errno' => 0,
+                'data'  => $msg->toArray()
+            ];
+
+        }else{
+            $response = [
+                'errno' => 50001,
+                'msg'   => '服务器异常，请联系管理员'
+            ];
+        }
+
+        die( json_encode($response));
+
+    }
 
     /**
      * 刷新access_token
