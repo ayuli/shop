@@ -141,7 +141,7 @@ Route::get('/weixin/material/upload','Weixin\WeixinController@upMaterial');     
 Route::post('/weixin/material','Weixin\WeixinController@materialTest');     //
 
 //Route::get('/weixin/interactive/form','Weixin\WeixinController@interactiveForm');     //客服展示
-//Route::post('/weixin/write','Weixin\WeixinController@write');     //客服发送
+Route::post('/weixin/write','Weixin\WeixinController@write');     //客服发送
 
 //微信聊天
 Route::get('/weixin/kefu/chat','Weixin\WeixinController@chatView');     //客服聊天

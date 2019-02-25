@@ -519,6 +519,18 @@ class WeixinController extends Controller
                             "content" => $message
                         ],
                 ];
+        $a = file_get_contents("php://input");
+        //解析XML
+        $xml = simplexml_load_string($a);        //将 xml字符串 转换成对象
+        $da = [
+            'msg'       => $message,
+            'msgid'     => $xml->MsgId,
+            'openid'    => $openid,
+            'msg_type'  => 2        // 1用户发送消息 2客服发送消息
+        ];
+        WeixinChatModel::insertGetId($data);
+
+
         $r = $client
             ->request('post', $url, ['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
         //解析接口返回信息
@@ -543,12 +555,13 @@ class WeixinController extends Controller
         ];
         return view('weixin.chat',$data);
     }
+
     public function getChatMsg()
     {
         $openid = $_GET['openid'];  //用户openid
         $pos = $_GET['pos'];        //上次聊天位置
         $msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->first();
-        //$msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->get();
+//        $msg = WeixinChatModel::where(['openid'=>$openid])->where('id','>',$pos)->get();
         if($msg){
             $response = [
                 'errno' => 0,
