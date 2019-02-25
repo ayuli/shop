@@ -1,7 +1,7 @@
 @extends('layouts.bst')
 
 @section('content')
-    <div class="container">
+    <div class="container" style="width: 800px">
         <h2>
             <img src="{{$user['headimgurl']}}" alt="头像" width="52px" class="img-rounded" style="margin-left: 100px">
             {{$user['nickname']}}
@@ -15,8 +15,8 @@
         <form action="" class="form-inline">
             <input type="hidden" value="{{$user['openid']}}" id="openid">
             <input type="hidden" value="1" id="msg_pos">
-            <textarea name="" id="send_msg" cols="132" rows="5"></textarea><br><br>
-            <button class="btn btn-info" id="send_msg_btn">Send Message</button>
+            <textarea name="" id="send_msg" cols="107" rows="5"></textarea><br><br>
+            <button class="btn btn-info" id="send_msg_btn" style="float: right">Send Message</button>
 
         </form>
     </div>
