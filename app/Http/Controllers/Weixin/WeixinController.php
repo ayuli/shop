@@ -519,16 +519,16 @@ class WeixinController extends Controller
                             "content" => $message
                         ],
                 ];
-        $a = file_get_contents("php://input");
-        //解析XML
-        $xml = simplexml_load_string($a);        //将 xml字符串 转换成对象
-        $da = [
-            'msg'       => $message,
-            'msgid'     => $xml->MsgId,
-            'openid'    => $openid,
-            'msg_type'  => 2        // 1用户发送消息 2客服发送消息
-        ];
-        WeixinChatModel::insertGetId($data);
+//        $a = file_get_contents("php://input");
+//        //解析XML
+//        $xml = simplexml_load_string($a);        //将 xml字符串 转换成对象
+//        $da = [
+//            'msg'       => $message,
+//            'msgid'     => $xml->MsgId,
+//            'openid'    => $openid,
+//            'msg_type'  => 2        // 1用户发送消息 2客服发送消息
+//        ];
+//        WeixinChatModel::insertGetId($da);
 
 
         $r = $client
