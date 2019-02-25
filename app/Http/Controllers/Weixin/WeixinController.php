@@ -520,6 +520,15 @@ class WeixinController extends Controller
                 ],
         ];
 
+        $da = [
+            'msg'       => $message,
+            'msgid'     => '',
+            'openid'    => $openid,
+            'msg_type'  => 1        // 1用户发送消息 2客服发送消息
+        ];
+        WeixinChatModel::insertGetId($da);
+
+
         $r = $client
             ->request('post', $url, ['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
         //解析接口返回信息
