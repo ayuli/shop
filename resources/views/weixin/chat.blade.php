@@ -35,7 +35,7 @@
                 success :   function(d){
                     if(d.errno==0){     //服务器响应正常
                         //数据填充
-                        var msg_str = '<blockquote>' +nickname + "&nbsp;&nbsp;" + d.data.add_time +
+                        var msg_str = '<blockquote>' + d.data.add_time +
                             '<p>' + d.data.msg + '</p>' +
                             '</blockquote>';
 
