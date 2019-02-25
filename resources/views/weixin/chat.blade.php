@@ -20,7 +20,8 @@
 @section('footer')
     @parent
     <script>
-        // alert(34234)
+
+
         var openid = $("#openid").val();
 
         setInterval(function(){
@@ -48,9 +49,10 @@
         },5000);
 
         // 客服发送消息 begin
-        $("#send_msg_btn").click(function(){
-            var message = $("#send_msg").val();
-            var msg_str = '<p style="color: mediumorchid"> >>>>> '+send_msg+'</p>';
+        $("#send_msg_btn").click(function(e){
+            e.preventDefault();
+            var message = $("#send_msg").val().trim();
+            var msg_str = '<p style="color: mediumorchid"> >>>>> '+message+'</p>';
             $("#chat_div").append(msg_str);
             $("#send_msg").val("");
 
@@ -66,10 +68,8 @@
                     console.log(d);
                 }
             })
-
         });
         // 客服发送消息 end
-
     </script>
-{{--    <script src="{{URL::asset('/js/weixin/chat.js')}}"></script>--}}
+    <script src="{{URL::asset('/js/weixin/chat.js')}}"></script>
 @endsection

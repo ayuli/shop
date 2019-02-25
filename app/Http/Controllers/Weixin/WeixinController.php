@@ -82,7 +82,7 @@ class WeixinController extends Controller
                     $file_name = $this->dlWxImg($xml->MediaId);
                     $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. date('Y-m-d H:i:s') .']]></Content></xml>';
                     echo $xml_response;
-                    
+
                     //写入数据库
                     $data = [
                         'openid'    => $openid,
@@ -512,24 +512,13 @@ class WeixinController extends Controller
         $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$this->getWXAccessToken();
         $client=new GuzzleHttp\Client(['base_uri' => $url]);
         $data = [
-                    "touser"    => $openid,
-                    "msgtype"   => "text",
-                    "text" =>
-                        [
-                            "content" => $message
-                        ],
-                ];
-//        $a = file_get_contents("php://input");
-//        //解析XML
-//        $xml = simplexml_load_string($a);        //将 xml字符串 转换成对象
-//        $da = [
-//            'msg'       => $message,
-//            'msgid'     => $xml->MsgId,
-//            'openid'    => $openid,
-//            'msg_type'  => 2        // 1用户发送消息 2客服发送消息
-//        ];
-//        WeixinChatModel::insertGetId($da);
-
+            "touser"    => $openid,
+            "msgtype"   => "text",
+            "text" =>
+                [
+                    "content" => $message
+                ],
+        ];
 
         $r = $client
             ->request('post', $url, ['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
