@@ -2,7 +2,10 @@
 
 @section('content')
     <div class="container">
-        <h2>用户:{{$user['nickname']}}</h2>
+        <h2>
+            <img src="{{$user['headimgurl']}}" alt="头像" width="52px" class="img-rounded" style="margin-left: 100px">
+            {{$user['nickname']}}
+        </h2>
         <input type="hidden" value="{{$user['nickname']}}" id="nickname">
         <div class="chat" id="chat_div">
 
@@ -12,8 +15,9 @@
         <form action="" class="form-inline">
             <input type="hidden" value="{{$user['openid']}}" id="openid">
             <input type="hidden" value="1" id="msg_pos">
-            <textarea name="" id="send_msg" cols="100" rows="5"></textarea>
-            <button class="btn btn-info" id="send_msg_btn">Send</button>
+            <textarea name="" id="send_msg" cols="132" rows="5"></textarea><br><br>
+            <button class="btn btn-info" id="send_msg_btn">Send Message</button>
+
         </form>
     </div>
 @endsection
@@ -34,12 +38,13 @@
                 dataType:   'json',
                 success :   function(d){
                     if(d.errno==0){     //服务器响应正常
-                        //数据填充
-                        var msg_str = '<p align="center">' + d.data.add_time + '</p>' +
-                            '<blockquote>' + d.data.msg  + '</blockquote>';
+                            //数据填充
+                            var msg_str = '<p align="center">' + d.data.add_time + '</p>' +
+                                '<blockquote>' + d.data.msg  + '</blockquote>';
 
-                        $("#chat_div").append(msg_str);
-                        $("#msg_pos").val(d.data.id)
+                            $("#chat_div").append(msg_str);
+                            $("#msg_pos").val(d.data.id)
+
                     }else{
 
                     }
