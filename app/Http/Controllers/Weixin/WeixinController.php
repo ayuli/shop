@@ -67,11 +67,12 @@ class WeixinController extends Controller
                     'msg'       => $xml->Content,
                     'msgid'     => $xml->MsgId,
                     'openid'    => $openid,
-                    'msg_type'  => 1        // 1用户发送消息 2客服发送消息
+                    'msg_type'  => 1,        // 1用户发送消息 2客服发送消息
+                    'add_time'  => date('Y-m-d H:i:s',time())
                 ];
 
                 $id = WeixinChatModel::insertGetId($data);
-                var_dump($id);
+//                var_dump($id);
                 //$xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. $msg. date('Y-m-d H:i:s') .']]></Content></xml>';
 
 
@@ -94,7 +95,7 @@ class WeixinController extends Controller
                         'local_file_name'   => $file_name
                     ];
                     $m_id = WeixinMedia::insertGetId($data);
-                    var_dump($m_id);
+//                    var_dump($m_id);
 
                 }
             }elseif($xml->MsgType=='voice'){        //处理语音信息
@@ -524,7 +525,8 @@ class WeixinController extends Controller
             'msg'       => $message,
             'msgid'     => '',
             'openid'    => $openid,
-            'msg_type'  => 1        // 1用户发送消息 2客服发送消息
+            'msg_type'  => 1,        // 1用户发送消息 2客服发送消息
+            'add_time'  => date('Y-m-d H:i:s',time())
         ];
         WeixinChatModel::insertGetId($da);
 

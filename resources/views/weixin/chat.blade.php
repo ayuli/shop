@@ -35,7 +35,7 @@
                 success :   function(d){
                     if(d.errno==0){     //服务器响应正常
                         //数据填充
-                        var msg_str = '<blockquote>' + d.data.created_at +
+                        var msg_str = '<blockquote>' + d.data.add_time +
                             '<p>' + d.data.msg + '</p>' +
                             '</blockquote>';
 
@@ -52,8 +52,8 @@
         $("#send_msg_btn").click(function(e){
             e.preventDefault();
             var message = $("#send_msg").val().trim();
-            var msg_str = '<p style="color: mediumorchid"> >>>>> '+message+'</p>';
-            $("#chat_div").append(msg_str);
+            // var msg_str = '<p style="color: mediumorchid"> >>>>> '+message+'</p>';
+            // $("#chat_div").append(msg_str);
             $("#send_msg").val("");
 
             $.ajax({
