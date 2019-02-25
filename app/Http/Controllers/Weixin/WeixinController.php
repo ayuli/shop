@@ -525,7 +525,7 @@ class WeixinController extends Controller
             'msg'       => $message,
             'msgid'     => '',
             'openid'    => $openid,
-            'msg_type'  => 1,        // 1用户发送消息 2客服发送消息
+            'msg_type'  => 2,        // 1用户发送消息 2客服发送消息
             'add_time'  => date('Y-m-d H:i:s',time())
         ];
         WeixinChatModel::insertGetId($da);

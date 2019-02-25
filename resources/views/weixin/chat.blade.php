@@ -35,9 +35,8 @@
                 success :   function(d){
                     if(d.errno==0){     //服务器响应正常
                         //数据填充
-                        var msg_str = '<blockquote>' + d.data.add_time +
-                            '<p>' + d.data.msg + '</p>' +
-                            '</blockquote>';
+                        var msg_str = '<p align="center">' + d.data.add_time + '</p>' +
+                            '<blockquote>' + d.data.msg  + '</blockquote>';
 
                         $("#chat_div").append(msg_str);
                         $("#msg_pos").val(d.data.id)
