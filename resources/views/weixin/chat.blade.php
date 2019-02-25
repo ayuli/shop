@@ -7,7 +7,7 @@
             &nbsp;&nbsp;{{$user['nickname']}}
         </h2>
         <input type="hidden" value="{{$user['nickname']}}" id="nickname">
-        <div class="chat" id="chat_div">
+        <div class="chat" id="chat_div" style="overflow: auto">
 
         </div>
         <hr>
