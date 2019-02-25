@@ -4,7 +4,7 @@
     <div class="container" style="width: 800px">
         <h2>
             <img src="{{$user['headimgurl']}}" alt="头像" width="52px" class="img-rounded" style="margin-left: 100px">
-            {{$user['nickname']}}
+            &nbsp;&nbsp;{{$user['nickname']}}
         </h2>
         <input type="hidden" value="{{$user['nickname']}}" id="nickname">
         <div class="chat" id="chat_div">
@@ -38,12 +38,22 @@
                 dataType:   'json',
                 success :   function(d){
                     if(d.errno==0){     //服务器响应正常
+                        if(d.data.msg_type==2){
                             //数据填充
-                            var msg_str = '<p align="center">' + d.data.add_time + '</p>' +
+                            var msg_str = '<p align="center">' + '客服&nbsp;&nbsp;'+ d.data.add_time + '</p>' +
                                 '<blockquote>' + d.data.msg  + '</blockquote>';
 
                             $("#chat_div").append(msg_str);
                             $("#msg_pos").val(d.data.id)
+                        }else{
+                            //数据填充
+                            var msg_str = '<p align="center">' + '用户&nbsp;&nbsp;'+ d.data.add_time + '</p>' +
+                                '<blockquote>' + d.data.msg  + '</blockquote>';
+
+                            $("#chat_div").append(msg_str);
+                            $("#msg_pos").val(d.data.id)
+                        }
+
 
                     }else{
 
