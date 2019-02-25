@@ -2,15 +2,15 @@
 
 @section('content')
     <div class="container">
-        <h2>开聊... openid:{{$openid}}</h2>
-
+        <h2>用户:{{$user['nickname']}}</h2>
+        <input type="hidden" value="{{$user['nickname']}}" id="nickname">
         <div class="chat" id="chat_div">
 
         </div>
         <hr>
 
         <form action="" class="form-inline">
-            <input type="hidden" value="{{$openid}}" id="openid">
+            <input type="hidden" value="{{$user['openid']}}" id="openid">
             <input type="hidden" value="1" id="msg_pos">
             <textarea name="" id="send_msg" cols="100" rows="5"></textarea>
             <button class="btn btn-info" id="send_msg_btn">Send</button>
@@ -23,7 +23,7 @@
 
 
         var openid = $("#openid").val();
-
+        var nickname = $("#nickname").val();
         setInterval(function(){
             $.ajax({
                 headers: {
@@ -35,7 +35,7 @@
                 success :   function(d){
                     if(d.errno==0){     //服务器响应正常
                         //数据填充
-                        var msg_str = '<blockquote>' + d.data.add_time +
+                        var msg_str = '<blockquote>' +nickname + "&nbsp;&nbsp;" + d.data.add_time +
                             '<p>' + d.data.msg + '</p>' +
                             '</blockquote>';
 
