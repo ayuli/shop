@@ -18,5 +18,7 @@ class VerifyCsrfToken extends Middleware
         'weixin/valid',
         'weixin/valid1',
         '/weixin/material',
+        //微信支付
+        '/weixin/pay/notice',
     ];
 }
