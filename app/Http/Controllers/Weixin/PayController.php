@@ -228,6 +228,17 @@ class PayController extends Controller
 
     }
 
+    public function wx_uccess($order_id)
+    {
+        $order = OrderModel::where(['order_id'=>$order_id])->first();
+        if($order['is_pay']==2){
+            $da = [
+                'error' => 1,
+                'msg'   => '支付成功'
+            ];
+            return $da;
+        }
 
+    }
 
 }

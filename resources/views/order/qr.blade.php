@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <script src="{{URL::asset('/qrcode/qrcode.js')}}"></script>
+    <script src="{{URL::asset('/js/jquery-3.2.1.min.js')}}"></script>
 </head>
 <body>
 <div id="qrcode" align="center"></div>
@@ -24,6 +25,24 @@
     // 使用 API
     qrcode.clear();
     qrcode.makeCode("{{$url}}");
+
+
+    setInterval(function(){
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url     :   '/weixin/pay/wx_uccess/{{$order_id}}',
+            type    :   'get',
+            dataType:   'json',
+            success :   function(d){
+                if(d.error==1){
+                    console.log(d.msg);
+                }
+            }
+        });
+    },5000);
+
 </script>
 </body>
 </html>
