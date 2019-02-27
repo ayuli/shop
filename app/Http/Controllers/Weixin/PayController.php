@@ -14,13 +14,17 @@ class PayController extends Controller
     public $weixin_unifiedorder_url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
     public $weixin_notify_url = 'http://www.xiaomeinan.com/weixin/pay/notice';     //支付通知回调
 
-    public function test()
+    public function test($order_id)
     {
 
 
         //
         $total_fee = 1;         //用户要支付的总金额
-        $order_id = OrderModel::OrderSN();
+        $orderIdWhere = [
+            'order_id'=>$order_id
+        ];
+
+        $order = OrderModel::where($orderIdWhere)->first();
 
         $order_info = [
             'appid'         =>  env('WEIXIN_APPID_0'),      //微信支付绑定的服务号的APPID
@@ -28,7 +32,7 @@ class PayController extends Controller
             'nonce_str'     => str_random(16),             // 随机字符串
             'sign_type'     => 'MD5',
             'body'          => '测试订单-'.mt_rand(1111,9999) . str_random(6),
-            'out_trade_no'  => $order_id,                       //本地订单号
+            'out_trade_no'  => $order['order_sn'],                       //本地订单号
             'total_fee'     => $total_fee,
             'spbill_create_ip'  => $_SERVER['REMOTE_ADDR'],     //客户端IP
             'notify_url'    => $this->weixin_notify_url,        //通知回调地址
@@ -54,11 +58,15 @@ class PayController extends Controller
 //		echo 'result_code: '.$data->result_code;echo '<br>';
 //		echo 'prepay_id: '.$data->prepay_id;echo '<br>';
 //		echo 'trade_type: '.$data->trade_type;echo '<br>';
-        echo 'code_url: '.$data->code_url;echo '<br>';
-//        die;
-        //echo '<pre>';print_r($data);echo '</pre>';
-
+//        /
+//        echo '<pre>';print_r($data);echo '</pre>';die;
+        $da = [
+            'url'       =>  $data->code_url,
+            'order_id' =>   $order_id
+        ];
+//        print_r($da);die;
         //将 code_url 返回给前端，前端生成 支付二维码
+        return view('order.qr',$da);
 
     }
 
@@ -178,7 +186,7 @@ class PayController extends Controller
 
             if($sign){       //签名验证成功
                 //TODO 逻辑处理  订单状态更新
-
+                $this->dealOrder($xml->out_trade_no);
             }else{
                 //TODO 验签失败
                 echo '验签失败，IP: '.$_SERVER['REMOTE_ADDR'];
@@ -189,6 +197,42 @@ class PayController extends Controller
 
         $response = '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
         echo $response;
+
+    }
+
+    /**
+     * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
+     * @param $data
+     */
+    public function dealOrder($out_trade_no)
+    {
+        // 减库存
+        $orderWhere = [
+            'order_id' => $out_trade_no
+        ];
+        $order = OrderModel::where($orderWhere)->first()->toArray();
+        $goodsWhere = [
+            'goods_id' =>$order['goods_id']
+        ];
+        $goods = GoodsModel::where($goodsWhere)->first();
+        $goodsData = [
+            'store' => $goods['store']-$order['pay_num']
+        ];
+        if($goodsData<=0){
+            exit('库存不足');
+        }
+        GoodsModel::where($goodsWhere)->update($goodsData);
+
+        // 修改订单状态
+
+        $orderData = [
+            'pay_amount'   => $_POST['total_amount'],
+            'pay_time'      =>  time(),
+            'is_pay'        =>  2,   //1未支付  2 已支付
+            'plat'          => 1, // 平台编号 1 支付宝 2 微信
+        ];
+        OrderModel::where($orderWhere)->update($orderData);
+
 
     }
 
