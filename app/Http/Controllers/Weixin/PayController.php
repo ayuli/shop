@@ -43,6 +43,7 @@ class PayController extends Controller
 
         $this->values = [];
         $this->values = $order_info;
+        //签名
         $this->SetSign();
 
         $xml = $this->ToXml();      //将数组转换为XML
@@ -183,9 +184,8 @@ class PayController extends Controller
 
         if($xml->result_code=='SUCCESS' && $xml->return_code=='SUCCESS'){      //微信支付成功回调
             //验证签名
-            $sign = true;
-
-            if($sign){       //签名验证成功
+            $sign=$this->wxSign($data);
+            if($sign==$xml->sign){      //签名验证成功
                 //TODO 逻辑处理  订单状态更新
                 // 修改订单状态
                 $orderWhere = [
@@ -239,6 +239,14 @@ class PayController extends Controller
             return $da;
         }
 
+    }
+    public function wxSign($xml)
+    {
+        $data = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        $this->values =[];
+        $this->values =$data;
+        $sign=$this->SetSign();
+        return $sign;
     }
 
 }
