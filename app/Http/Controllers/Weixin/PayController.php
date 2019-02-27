@@ -186,7 +186,34 @@ class PayController extends Controller
 
             if($sign){       //签名验证成功
                 //TODO 逻辑处理  订单状态更新
-                $this->dealOrder($xml->out_trade_no);
+                // 减库存
+                $orderWhere = [
+                    'order_sn' => $xml->out_trade_no
+                ];
+                $order = OrderModel::where($orderWhere)->first()->toArray();
+                $goodsWhere = [
+                    'goods_id' =>$order['goods_id']
+                ];
+                $goods = GoodsModel::where($goodsWhere)->first();
+                $goodsData = [
+                    'store' => $goods['store']-$order['pay_num']
+                ];
+                if($goodsData<=0){
+                    exit('库存不足');
+                }
+                GoodsModel::where($goodsWhere)->update($goodsData);
+
+                // 修改订单状态
+
+                $orderData = [
+                    'pay_amount'   => $xml->total_fee,
+                    'pay_time'      =>  time(),
+                    'is_pay'        =>  2,   //1未支付  2 已支付
+                    'plat'          => 2, // 平台编号 1 支付宝 2 微信
+                ];
+                OrderModel::where($orderWhere)->update($orderData);
+
+
             }else{
                 //TODO 验签失败
                 echo '验签失败，IP: '.$_SERVER['REMOTE_ADDR'];
@@ -200,41 +227,6 @@ class PayController extends Controller
 
     }
 
-    /**
-     * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
-     * @param $data
-     */
-    public function dealOrder($out_trade_no)
-    {
-        // 减库存
-        $orderWhere = [
-            'order_sn' => $out_trade_no
-        ];
-        $order = OrderModel::where($orderWhere)->first()->toArray();
-        $goodsWhere = [
-            'goods_id' =>$order['goods_id']
-        ];
-        $goods = GoodsModel::where($goodsWhere)->first();
-        $goodsData = [
-            'store' => $goods['store']-$order['pay_num']
-        ];
-        if($goodsData<=0){
-            exit('库存不足');
-        }
-        GoodsModel::where($goodsWhere)->update($goodsData);
-
-        // 修改订单状态
-
-        $orderData = [
-            'pay_amount'   => $_POST['total_amount'],
-            'pay_time'      =>  time(),
-            'is_pay'        =>  2,   //1未支付  2 已支付
-            'plat'          => 2, // 平台编号 1 支付宝 2 微信
-        ];
-        OrderModel::where($orderWhere)->update($orderData);
-
-
-    }
 
 
 }
