@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Weixin\WXBizDataCryptController;
 use App\Model\OrderModel;
+use App\Model\GoodsModel;
 
 class PayController extends Controller
 {
