@@ -187,10 +187,21 @@ class PayController extends Controller
 
             if($sign){       //签名验证成功
                 //TODO 逻辑处理  订单状态更新
-                // 减库存
+                // 修改订单状态
                 $orderWhere = [
                     'order_sn' => $xml->out_trade_no
                 ];
+
+                $orderData = [
+                    'pay_amount'   => $xml->total_fee,
+                    'pay_time'      =>  time(),
+                    'is_pay'        =>  2,   //1未支付  2 已支付
+                    'plat'          => 2, // 平台编号 1 支付宝 2 微信
+                ];
+                OrderModel::where($orderWhere)->update($orderData);
+
+                // 减库存
+
                 $order = OrderModel::where($orderWhere)->first()->toArray();
                 $goodsWhere = [
                     'goods_id' =>$order['goods_id']
@@ -204,16 +215,7 @@ class PayController extends Controller
                 }
                 GoodsModel::where($goodsWhere)->update($goodsData);
 
-                // 修改订单状态
-
-                $orderData = [
-                    'pay_amount'   => $xml->total_fee,
-                    'pay_time'      =>  time(),
-                    'is_pay'        =>  2,   //1未支付  2 已支付
-                    'plat'          => 2, // 平台编号 1 支付宝 2 微信
-                ];
-                OrderModel::where($orderWhere)->update($orderData);
-
+                return view("order.success");
 
             }else{
                 //TODO 验签失败
