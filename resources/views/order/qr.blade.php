@@ -37,7 +37,8 @@
             dataType:   'json',
             success :   function(d){
                 if(d.error==1){
-                    console.log(d.msg);
+                    alert('支付成功');
+                    window.location.href='/order/pay/{{$order_id}}'
                 }
             }
         });
