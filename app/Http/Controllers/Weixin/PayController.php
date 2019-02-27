@@ -208,7 +208,7 @@ class PayController extends Controller
     {
         // 减库存
         $orderWhere = [
-            'order_id' => $out_trade_no
+            'order_sn' => $out_trade_no
         ];
         $order = OrderModel::where($orderWhere)->first()->toArray();
         $goodsWhere = [
@@ -229,7 +229,7 @@ class PayController extends Controller
             'pay_amount'   => $_POST['total_amount'],
             'pay_time'      =>  time(),
             'is_pay'        =>  2,   //1未支付  2 已支付
-            'plat'          => 1, // 平台编号 1 支付宝 2 微信
+            'plat'          => 2, // 平台编号 1 支付宝 2 微信
         ];
         OrderModel::where($orderWhere)->update($orderData);
 
