@@ -202,18 +202,18 @@ class PayController extends Controller
 
                 // 减库存
 
-                $order = OrderModel::where($orderWhere)->first()->toArray();
-                $goodsWhere = [
-                    'goods_id' =>$order['goods_id']
-                ];
-                $goods = GoodsModel::where($goodsWhere)->first();
-                $goodsData = [
-                    'store' => $goods['store']-$order['pay_num']
-                ];
-                if($goodsData<=0){
-                    exit('库存不足');
-                }
-                GoodsModel::where($goodsWhere)->update($goodsData);
+//                $order = OrderModel::where($orderWhere)->first()->toArray();
+//                $goodsWhere = [
+//                    'goods_id' =>$order['goods_id']
+//                ];
+//                $goods = GoodsModel::where($goodsWhere)->first();
+//                $goodsData = [
+//                    'store' => $goods['store']-$order['pay_num']
+//                ];
+//                if($goodsData<=0){
+//                    exit('库存不足');
+//                }
+//                GoodsModel::where($goodsWhere)->update($goodsData);
 
                 return view("order.success");
 
