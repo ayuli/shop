@@ -672,8 +672,8 @@ class WeixinController extends Controller
 
        if(!$ticket){   //无缓存 请求接口
            //获取access_token
-           $access_token = $this->getWXAccessToken();
-            $access_token = '19_zSK1wFmCvzUb9Shhf3JDL0hu5yiKKLoPmDxsruFg3iEjGkO_fK2bP0PSrnp3Vj8HIcgjIWIxed4ZW4KDqqUGG112ATtu48cwKUg8cOmR0OR5zDPYUjEJx88PuGarHzfvn4X3RQgEGC9ZEW5OXCTgAJAHMD';
+//           $access_token = $this->getWXAccessToken();
+            $access_token = '19_G-ALiWL5QrWuYMVUb9ShYbXIBASa6zX8YAE2c5RbEy3b9v-x1zMPN5P-pxCx6xCRqtRVpxSixBcjV6an0UorkP5qd6rUlbIB67Il-u1BOOkcX22nfa5gw2mhDGL2nFIN3YtH7hbBHktjRC7DNAZeAGACPO';
            //用拿到的access_token 采用http GET方式请求获得jsapi_ticket
             $ticket_url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=jsapi';
             $ticket_info = file_get_contents($ticket_url);
