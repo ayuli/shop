@@ -156,3 +156,5 @@ Route::get('/weixin/pay/wx_uccess/{order_id}','Weixin\PayController@wx_uccess');
 Route::get('/weixin/login','Weixin\WeixinController@login');
 Route::get('/weixin/getcode','Weixin\WeixinController@getCode'); //接收code
 
+//微信JS-SDK
+Route::get('/weixin/jssdk','Weixin\WeixinController@jssdkTest');

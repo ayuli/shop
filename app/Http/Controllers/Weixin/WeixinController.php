@@ -20,6 +20,7 @@ class WeixinController extends Controller
     //
 
     protected $redis_weixin_access_token = 'str:weixin_access_token';     //微信 access_token
+    protected $redis_weixin_jsapi_ticket = 'str:weixin_jsapi_ticket';     //微信jsapi_ticket
 
     public function test()
     {
@@ -626,5 +627,72 @@ class WeixinController extends Controller
         echo '<hr>';
         echo '<pre>';print_r($user_arr);echo '</pre>';
     }
+
+    /**
+     * 微信js-jdk
+     */
+    public function jssdkTest()
+    {
+        $jsconfig = [
+            'appid' => env('WEIXIN_APPID_0'),  //APPID
+            'timestamp' => time(),
+            'noncestr' => str_random(10),
+//            'sign' => $this->wxJsConfigSign()
+        ];
+
+        $sign = $this->wxJsConfigSign($jsconfig);
+        $jsconfig['sign'] = $sign;
+
+        $data = [
+            'jsconfig'  => $jsconfig
+        ];
+        return view('weixin.jssdk',$data);
+    }
+
+    /**
+     * 计算JS-SDK 签名
+     */
+   public function wxJsConfigSign($param)
+   {
+       $current_url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+       $ticket = $this->getJsapiTicket();
+       //对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）后，使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串string1：
+       $str =  'jsapi_ticket='.$ticket.'&noncestr='.$param['noncestr']. '&timestamp='. $param['timestamp']. '&url='.$current_url;
+       $signature=sha1($str);  //对string1进行sha1签名，得到signature
+       return $signature;
+
+   }
+
+    /**
+     * 获取jsapi_ticket
+     */
+   public function getJsapiTicket()
+   {
+        //是否有缓存
+       $ticket = Redis::get($this->redis_weixin_jsapi_ticket);
+
+       if(!$ticket){   //无缓存 请求接口
+           //获取access_token
+            $access_token = $this->getWXAccessToken();
+           //用拿到的access_token 采用http GET方式请求获得jsapi_ticket
+            $ticket_url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=jsapi';
+            $ticket_info = file_get_contents($ticket_url);
+            $ticket_arr = json_decode($ticket_info,true);
+//           成功返回如下JSON：
+//           {
+//             "errcode":0,
+//            "errmsg":"ok",
+//            "ticket":"bxLdikRXVbTPdHSM05e5u5sUoXNKd8-41ZO3MhKoyN5OfkWITDGgnr2fwJ0m9E8NYzWKVZvdVtaUgWvsdshFKA",
+//            "expires_in":7200
+//            }
+           if(isset($ticket_arr['ticket'])){
+               $ticket = $ticket_arr['ticket'];
+               Redis::set($this->redis_weixin_jsapi_ticket,$ticket);
+               Redis::setTimeout($this->redis_weixin_jsapi_ticket,3600);       //设置过期时间 3600s
+           }
+        }
+       return $ticket;
+
+   }
 
 }
