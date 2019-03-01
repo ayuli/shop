@@ -634,15 +634,14 @@ class WeixinController extends Controller
     public function jssdkTest()
     {
         $jsconfig = [
-            'appid' => env('WEIXIN_APPID_0'),  //APPID
+            'appid' => env('WEIXIN_APPID'),        //APPID
             'timestamp' => time(),
-            'noncestr' => str_random(10),
-//            'sign' => $this->wxJsConfigSign()
+            'noncestr'    => str_random(10),
+            //'sign'      => $this->wxJsConfigSign()
         ];
 
         $sign = $this->wxJsConfigSign($jsconfig);
         $jsconfig['sign'] = $sign;
-
         $data = [
             'jsconfig'  => $jsconfig
         ];
