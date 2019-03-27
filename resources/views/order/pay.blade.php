@@ -31,7 +31,8 @@
         <div >
             @if($order['is_pay']==1)
                 <a type="button" class="btn btn-info" href="/alipay/payo/{{$order['order_id']}}" id="add_cart_btn">支付宝支付</a>
-                <a type="button" class="btn btn-info" href="/weixin/pay/test/{{$order['order_id']}}" id="add_cart_btn">微信支付</a>
+                <a type="button" class="btn btn-info" href="/paytest/{{$order['order_id']}}" id="add_cart_btn">微信支付</a>
+                {{--<a type="button" class="btn btn-info" href="/weixin/pay/test/{{$order['order_id']}}" id="add_cart_btn">微信支付</a>--}}
                 <a type="button" class="btn btn-info" href="/order/off/{{$order['order_id']}}" id="add_cart_btn">取消订单</a>
             @elseif($order['is_pay']==2)
                 <button type="button" class="btn btn-default" disabled="disabled">已支付</button>
