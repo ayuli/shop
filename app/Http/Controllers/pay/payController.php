@@ -60,7 +60,7 @@ class payController extends Controller
         $info  = $obj->sendPost($url,$strJson); //发送
         $objxml = simplexml_load_string($info); //将xml转化成对象
         $url = $objxml->code_url;   //获取code
-        return view('pay.pay',['url'=>$url]);
+        return view('pay.pay',['url'=>$url,'order_id'=>$order_id]);
     }
     
 

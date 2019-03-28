@@ -27,4 +27,23 @@
         correctLevel: QRCode.CorrectLevel.H,
     });
 
+
+    setInterval(function(){
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url     :   '/weixin/pay/wx_uccess/{{$order_id}}',
+            type    :   'get',
+            dataType:   'json',
+            success :   function(d){
+                if(d.error==1){
+                    alert('支付成功');
+                    {{--window.location.href='/order/pay/{{$order_id}}'--}}
+                }
+            }
+        });
+    },5000);
+
+
 </script>
