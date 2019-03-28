@@ -39,7 +39,7 @@
             success :   function(d){
                 if(d.error==1){
                     alert('支付成功');
-                    {{--window.location.href='/order/pay/{{$order_id}}'--}}
+                    window.location.href='/order'
                 }
             }
         });
