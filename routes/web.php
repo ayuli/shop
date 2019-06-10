@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/searchShow','User\UserController@searchShow');
+Route::any('/searchShow','User\UserController@searchShow');
 
 Route::get('/adduser','User\UserController@add');
 
