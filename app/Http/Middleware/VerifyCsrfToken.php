@@ -13,13 +13,14 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-        "/pay/alipay/notify",
-        //微信公众号
-        'weixin/valid',
-        'weixin/valid1',
-        '/weixin/material',
-        //微信支付
-        '/weixin/pay/notice',
-        '/searchShow',
+        "*"
+//        "/pay/alipay/notify",
+//        //微信公众号
+//        'weixin/valid',
+//        'weixin/valid1',
+//        '/weixin/material',
+//        //微信支付
+//        '/weixin/pay/notice',
+//        '/searchShow',
     ];
 }
