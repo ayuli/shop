@@ -36,4 +36,14 @@ class UserController extends Controller
         header('location:/login');
     }
 
+
+
+    /**
+     *  搜索
+     */
+    public function searchShow()
+    {
+        echo 1122221;
+    }
+
 }
