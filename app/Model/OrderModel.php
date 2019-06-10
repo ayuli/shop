@@ -16,7 +16,7 @@ class OrderModel extends Model
     public static function OrderSN()
     {
 //        return date('ymdHi').rand(11111,99999).rand(2222,8888);
-        return date('ymdH').rand(11111,99999).rand(2222,8888);
+        return date('YmdH').rand(111,999).rand(222,888);
     }
 
 }
