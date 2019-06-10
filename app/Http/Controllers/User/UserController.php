@@ -41,9 +41,10 @@ class UserController extends Controller
     /**
      *  搜索
      */
-    public function searchShow()
+    public function searchShow(Request $request)
     {
-        echo 1122221;
+        $searchValue = $request->input('searchValue');
+        echo $searchValue;
     }
 
 }
